@@ -1,0 +1,287 @@
+/*-------configuration--------*/
+
+* {
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.overflow {
+	overflow:hidden;
+}
+
+.clear {
+	clear:both;
+}
+
+/*-------gameboy--------*/
+
+.gameboy {
+	background:url(../img/gameboy.png);
+	width:500px;
+	height:655px;
+	padding-top:85px;
+}
+
+.gameboy  .joystick {
+	margin-top: 105px;
+	margin-left: 25px;
+	float:left;
+}
+
+.gameboy .button,.arrow {
+	cursor:pointer;
+}
+
+.gameboy .joystick .arrow {
+	width:50px;
+	height:25px;
+	text-align:center;
+	width:42px;
+	height:42px;
+}
+
+.gameboy .joystick .arrow.left {
+	background:url(../img/joystick-left.jpg);
+	float:left;
+}
+
+.gameboy .joystick .arrow.top {
+	background:url(../img/joystick-top.jpg);
+	margin-left:41px;
+}
+
+.gameboy .joystick .arrow.right {
+	background:url(../img/joystick-right.jpg);
+	margin-left:84px;
+}
+
+.gameboy .joystick .arrow.middle {
+	background:url(../img/joystick-middle.jpg);
+	float:left;
+}
+
+
+.gameboy .joystick .arrow.bottom {
+	background:url(../img/joystick-bottom.jpg);
+	margin-left:41px;
+}
+
+.gameboy .joystick .arrow.top,.joystick .arrow.bottom {
+
+}
+
+.gameboy .joystick .arrow .direction{
+	display:none;
+}
+
+.gameboy .cmd {
+	margin:109px 0 0 275px
+}
+
+.gameboy .cmd .button {
+	width:74px;
+	height:110px;
+}
+
+.gameboy .cmd .button.a {
+	background:url(../img/button-a.jpg);
+	margin-left:74px;
+}
+
+.gameboy .cmd .button.b {
+	background:url(../img/button-b.jpg);
+	float:left;
+}
+
+.gameboy .control {
+	margin:80px 0 0 140px
+}
+
+.gameboy .control .button {
+	width:72px;
+	height:45px;
+}
+
+.gameboy .control .button.select {
+	background:url(../img/button-select.jpg);
+	float:left;
+}
+
+.gameboy .control .button.start {
+	background:url(../img/button-start.jpg);
+	margin-left:80px;
+}
+
+
+/*-------screen--------*/
+
+.screen {
+	width: 330px;
+	height: 270px;
+	position: relative;
+	margin-left: 83px;
+	background: #9ABB30;
+}
+
+.screen .sasha{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	text-align: center;
+	z-index:2000;
+}
+
+.screen .object {
+	position:absolute;
+}
+
+/*-------fight--------*/
+
+.fight{
+	width: 330px;
+	height: 270px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background:#000;
+	overflow: hidden;
+	z-index:2;
+	display:none;
+	overflow:hidden;
+}
+
+.fight .mask{
+	width: 330px;
+	height: 270px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background:#000;
+	overflow: hidden;
+	z-index:3;
+	display:none;
+	overflow:hidden;
+}
+
+.fight .life-container {
+	height: 4px;
+	width: 130px;
+	border: solid 1px #000;
+}
+
+.fight .life-container .life{
+	background-color: #00A9B8;
+	width:100%;
+	height:100%;
+}
+
+.fight .capacite  .label{
+	display:block;
+}
+
+.fight .capacite  .item{
+	font-size:8px;
+	display:block;
+	cursor:pointer;
+	color:#ff4100;
+}
+
+.fight .my-pokemon {
+	width:100%;
+	height:50%;
+	font-size:10px;
+}
+
+.fight .my-pokemon .life-container {
+	margin-left:70px
+}
+
+.fight .img {
+	width:100px;
+	height:100px;
+	overflow:hidden;
+	position:absolute;
+}
+
+.fight .img img {
+	width:100%;
+}
+
+.fight .my-pokemon .img{
+	float: left;
+	width: 150px;
+	height: 135px;
+	top:65px;
+	left:-130px;
+	opacity:0;
+}
+
+.fight .my-pokemon .stat{
+	margin-left: 130px;
+	margin-top:50px;
+	text-align: right;
+}
+
+.fight .rival-pokemon {
+	width:100%;
+	height:50%;
+	font-size:10px;
+}
+
+.fight .rival-pokemon .stat{
+	float:left;
+}
+
+.fight .rival-pokemon .img{
+	left:340px;
+	opacity:0;
+}
+
+.fight .command {
+	width:100%;
+	height:70px;
+	position:absolute;
+	bottom:0px;
+	background:#ebebeb;
+	width:100%;
+	overflow:hidden;
+	border: solid 1px black;
+}
+
+.fight .command .talk{
+	width: 195px;
+	height: 78px;
+	float: left;
+	text-transform:uppercase;
+	font-size:14px;
+}
+
+.fight .command  .action {
+	border: solid 1px black;
+	width: 131px;
+	height: 78px;
+	margin-left: 197px;
+}
+
+.fight .command  .action .item{
+	cursor:pointer;
+}
+
+
+
+.fight .command .attack .item {
+	cursor:pointer;
+}
+
+
+.fight .command .do .item .code {
+	display:none;
+}
+
+
+
+
+
+
