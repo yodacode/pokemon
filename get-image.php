@@ -6,4 +6,5 @@
 		header('Cache-Control: public');
 	  echo file_get_contents('./'.$_GET['img']);
 	}
+	//test dorian
 ?>
