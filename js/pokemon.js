@@ -139,22 +139,17 @@ var initPokemon = function() {
 		this.currentTime = +(new Date);
 		this.timeGoCell = 300;
 		this.progress = 0;
-		this.currentStep = 0;
+		this.currentStep = 0;	
 		
 		var self = this;
 		
-		
-		if(this.canMoveTo(direction)){
-		
-			var prevPosition = Sasha.forward();
-			
+		if(this.canMoveTo(direction)){	
+			var prevPosition = Sasha.forward();			
 			this.timerMoveTo = window.setInterval(function(){
-			
 				//Calcul du pourcentage de progression dans la case obtenu par le ratio du temps parcouru sur le temps que l'on met à parcourir une cellule
 				self.currentTime = +(new Date);
 				self.progress = ((self.currentTime - self.previousTime) % self.timeGoCell) / self.timeGoCell;
 				var newStep = Math.floor((self.currentTime - self.previousTime) / self.timeGoCell);
-				
 				//si on change de case alors on marque le new step et on clear l'interval 
 				if(newStep != self.currentStep){
 					self.currentStep = newStep;
@@ -405,18 +400,19 @@ var initPokemon = function() {
 	
 	/**
 	 * Class : Fight()
-	 * @Docs : Permet de construir un fight
+	 * @Docs : Permet de construir une fight
 	 */
 	var FightConstructor = function Fight() {
-		this.pokemonA = null;
-		this.pokemonB = null;
 		this.winner = null;
 		this.looser = null;
 		this.panel = $('.screen .fight');
 		this.actionBlock = this.panel.find('.command .action');
 		this.attackBlock = this.panel.find('.command .action .attack');
 		this.doBlock = this.panel.find('.command .action .do');
-		this.talkBlock = this.panel.find('.command .talk');
+		this.talkBlock = this.panel.find('.command .talk .content');
+		this.jeton = 0;
+		this.myPokemon = null;
+		this.rivalPokemon = null;
 	}
 	
 	/**
@@ -428,12 +424,13 @@ var initPokemon = function() {
 		var nbPlay = 0;
 		var isDisplay = false;
 		var self = this;
+		self.panel.css('background-color','#000');
 		$('.screen .fight .panel').hide();
 		timerIntro = window.setInterval(function(){
 			if(nbPlay > 16){
 				window.clearInterval(timerIntro);
-				self.panel.css('background-color','#FFF');
-				Sasha.sashaDiv.fadeOut(300,Fight.loadFight([Pokemon, Pokemon.randomPokemon()]));
+				self.panel.css('background','url(img/bg-fight.jpg)');
+				Sasha.sashaDiv.fadeOut(300,Fight.loadFight([Pokemon, Pokemon.randomPokemon()],self.jeton));
 			} else {
 				if(isDisplay){
 					self.panel.hide();
@@ -451,24 +448,27 @@ var initPokemon = function() {
 	 * method : loadFight(array [myPokemon, rivalPokemon])
 	 * @Docs : Permet de charger un combat 
 	 */
-	FightConstructor.prototype.loadFight = function(pokemon){
+	FightConstructor.prototype.loadFight = function(pokemon,jeton){
 		var self = this;
 		this.attackBlock.hide();
 		this.doBlock.hide();
+		this.myPokemon = pokemon[0];
+		this.rivalPokemon = pokemon[1];
+		
 		$('.screen .fight .panel').fadeIn(200, function(){
 			$('.my-pokemon .img').animate({
 				left : 0,
 				opacity : 1
 			},500,function(){
 				$('.rival-pokemon .img').animate({
-					left : 250,
+					left : 230,
 					opacity : 1
 				},500,function(){
-					self.talkBlock.append(pokemon[1].name+ ' veut se battre <br/>'+pokemon[0].name+' en Avant !').hide().slideDown(900,function(){self.doBlock.show()});
-					
+					self.talkBlock.append(self.rivalPokemon.name+ ' veut se battre <br/>'+self.myPokemon.name+' en Avant !').hide().slideDown(200,function(){self.doBlock.show()});
 				});
 			});
 		});
+		
 		for(var i=0; i < pokemon.length; i++){
 			var equip = null;
 			if(i == 0) equip = 'my-pokemon';
@@ -484,22 +484,75 @@ var initPokemon = function() {
 					this.panel.find('.'+equip+' .'+j).append(pokemon[i][j]);
 				}
 			}
-		}
-		for(var i = 0; i < pokemon[0].capacite.length; i++){
-			this.attackBlock.append('<div class="item">'+pokemon[0].capacite[i]+'</div>');
 		}	
+		for(var i = 0; i < this.myPokemon.capacite.length; i++){
+			this.attackBlock.append('<div class="item"><div class="code hidden">'+this.myPokemon.capacite[i]+'</div>'+Attack.getAttack(this.myPokemon.capacite[i]).name+'</div>');
+		}		
 		this.doBlock.find('.item').click(function(){
 			var codeAction = $(this).find('.code').text();
-			if(codeAction == 'attack'){
-				self.doBlock.hide();
-				self.attackBlock.show();
-			} else if (codeAction == 'run'){
-				Fight.stopFight();
-			}
-		});
-		this.attackBlock.find('.item').click(function(){
-			Attack.launchAttack($(this).text(),pokemon[0],pokemon[1]);
-		});
+			Fight.doAction(codeAction,pokemon);
+		}); 
+		
+	};
+	
+	/**
+	 * method : doAction()
+	 * @Docs : Permet d'effectuer une action lié à l'attaque
+	 */
+	FightConstructor.prototype.doAction = function (action, pokemon) {
+		var self = this;
+		if(action == 'attack'){
+
+				this.attackBlock.hide();
+				this.doBlock.hide();
+				this.attackBlock.show();
+				this.attackBlock.find('.item').click(function(){
+					var codeAttack = $(this).find('.code').text();
+					Attack.launchAttack(codeAttack,self.jeton);
+				});
+
+		}
+	};
+	
+	/**
+	 * method : updateRender(obj pokemonAttack, obj pokemonDefender)
+	 * @Docs : permet de mettre à jour le render aprés les damage causé suite à une attaque
+	 */
+	FightConstructor.prototype.updateRender = function (pokemonAttack,pokemonDefender) {
+		var $lifeBar = null;
+		var RestPercentLife = Math.ceil(  (pokemonDefender.currentPV / pokemonDefender.pv)*100);
+		var $pokemonTeam = null;
+		var self = this;
+		if(this.jeton === 0){//c'est une attaque de moi on update rival	
+			$pokemonTeam = $('.rival-pokemon');
+			this.jeton = 1;
+		} else if(this.jeton === 1) { //c'est une attaque rival on update me
+		
+			$pokemonTeam = $('.my-pokemon');
+			this.jeton = 0;
+		}	
+		var $lifeBar = $pokemonTeam.find('.life-container .life');
+		if(RestPercentLife <= 0){
+			$pokemonTeam.find('.currentPV').text(0);
+			$lifeBar.animate({
+				width : RestPercentLife+'%'
+			},function(){
+				$pokemonTeam.find('.img').animate({
+					top : 900
+				},function(){
+
+				});
+			});	
+		} else {
+			$pokemonTeam.find('.currentPV').text(pokemonDefender.currentPV);
+			$lifeBar.animate({
+				width : RestPercentLife+'%'
+			},function(){
+				if(self.jeton === 1){
+					Attack.launchAttack('griffe',self.jeton);
+				}	
+			});
+		}
 	};
 	
 	/**
@@ -531,10 +584,16 @@ var initPokemon = function() {
 	 * @Docs : permet de faire le calcul de l'attaque en fonction du pokemon attaqué et du pokemon qui defend
 	 * return damage
 	 */
-	AttackConstructor.prototype.launchAttack = function (name, pokemonAttack, pokemonDefender) {
+	AttackConstructor.prototype.launchAttack = function (name, jeton) {
 		this.name = name;
-		this.pokemonAttack = pokemonAttack;
-		this.pokemonDefender = pokemonDefender;
+		if(jeton == 0){
+			this.pokemonAttack = Fight.myPokemon;
+			this.pokemonDefender = Fight.rivalPokemon;
+		} else if(jeton == 1) {
+			this.pokemonAttack = Fight.rivalPokemon;
+			this.pokemonDefender = Fight.myPokemon;
+		}
+		
 		var getRandom = function getRandomInt (min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
@@ -545,14 +604,14 @@ var initPokemon = function() {
 		var attackPower = attack.power;
 		var random = getRandom(85,100);
 		var damage = Math.floor(((((2 * attackerLevel / 5 + 2) * attackerAttack * attackPower / defenderDefense) / 50) + 2) * random / 100);
-		//console.log('AttackerLevel : '+attackerLevel,'AttackPower: '+attackPower,'defenderDefense: '+defenderDefense,'random: '+random, 'attackerAttack: '+attackerAttack);
-		console.log('Damage : '+damage);
-		return damage;
+		this.pokemonDefender.currentPV -= damage
+		Fight.updateRender(this.pokemonAttack,this.pokemonDefender);
 	};
 	
 	/**
-	 * method : launchAttack(string type, obj pokemonAttack, obj pokemonDefender)
-	 * @Docs : permet de faire le calcul de l'attaque en fonction du pokemon attaqué et du pokemon qui defend
+	 * method : getAttack([string name])
+	 * @Docs : permet de récuperer un ou les objets attack
+	 * return obj attack
 	 */
 	AttackConstructor.prototype.getAttack = function (name) {
 		var listAttack = {
@@ -626,8 +685,7 @@ var initPokemon = function() {
 						power : 40,
 						precision : 100
 					}
-			};
-		
+		};
 		if(name){
 			return listAttack[name];
 		} else {
@@ -774,7 +832,7 @@ var initPokemon = function() {
 	var Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
 	var Fight = new FightConstructor();
 	var Attack = new AttackConstructor();
-	var Pokemon = new PokemonConstructor('salameche', ['griffe','flammeche','grosYeux'], 'feu', 'salameche.png', {defense:43, attack:52, level:5, xp:0, currentPV:39, pv:39});
+	var Pokemon = new PokemonConstructor('salameche', ['griffe','flammeche','grosYeux'], 'feu', 'salameche.png', {defense:43, attack:52, level:25, xp:0, currentPV:39, pv:39});
 	
 	
 	var items = 
@@ -792,7 +850,7 @@ var initPokemon = function() {
 			{name : 'wallBorderRight', value :  new ItemConstructor(0, 10, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
 			{name : 'chen', value :  new ItemConstructor(3, 5, 1, 1, 'maps/chen/chen.png', { action : 'conflict', proba : 1})},
 			{name : 'table', value :  new ItemConstructor(4, 6, 2, 3, 'maps/chen/desk.png', { action : 'conflict', proba : 1})},
-			{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 3})},
+			{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
 			
 			//Création map bourg palet
 			
