@@ -549,6 +549,7 @@ var initPokemon = function() {
 				width : RestPercentLife+'%'
 			},function(){
 				if(self.jeton === 1){
+					Pokemon.getRandomAttack(self.rivalPokemon);
 					Attack.launchAttack('griffe',self.jeton);
 				}	
 			});
@@ -787,7 +788,7 @@ var initPokemon = function() {
 				{
 					name : 'roucool',
 					type : 'normal',
-					capacite : ['griffe','flammeche','gros yeux'],
+					capacite : ['jetSable','tornade','grosYeux'],
 					img : 'roucool.png',
 					stat : {defense:40, attack:45, level:5, xp:0, currentPV:40, pv:40},
 					savage : true
@@ -808,6 +809,22 @@ var initPokemon = function() {
 			return listPokemon;
 		}
 	
+	}
+	
+	
+	/**
+	 * method : getRandomAttack(obj name)
+	 * @Docs : Permet de selctionner une attaque aléatoire d'un Pokemon
+	 * return : obj attack
+	 */
+	PokemonConstructor.prototype.getRandomAttack = function Pokemon(name) {
+		var getRandom = function getRandomInt (min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		var pokemon = name;	
+		var randomAttack = pokemon.capacite[getRandom(0,pokemon.capacite.length-1)];
+		console.log(randomAttack);
+		return randomAttack;
 	}
 
 
