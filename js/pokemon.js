@@ -464,7 +464,7 @@ var initPokemon = function() {
 					left : 230,
 					opacity : 1
 				},500,function(){
-					self.talkBlock.append(self.rivalPokemon.name+ ' veut se battre <br/>'+self.myPokemon.name+' en Avant !').hide().slideDown(200,function(){self.doBlock.show()});
+					self.talkBlock.append(self.rivalPokemon.name+ ' veut se battre <br/>'+self.myPokemon.name+' en Avant !').hide().fadeIn(200,function(){self.doBlock.show()});
 				});
 			});
 		});
@@ -527,7 +527,6 @@ var initPokemon = function() {
 			$pokemonTeam = $('.rival-pokemon');
 			this.jeton = 1;
 		} else if(this.jeton === 1) { //c'est une attaque rival on update me
-		
 			$pokemonTeam = $('.my-pokemon');
 			this.jeton = 0;
 		}	
@@ -549,8 +548,7 @@ var initPokemon = function() {
 				width : RestPercentLife+'%'
 			},function(){
 				if(self.jeton === 1){
-					Pokemon.getRandomAttack(self.rivalPokemon);
-					Attack.launchAttack('griffe',self.jeton);
+					Attack.launchAttack(Pokemon.getRandomAttack(self.rivalPokemon),self.jeton);
 				}	
 			});
 		}
@@ -587,6 +585,7 @@ var initPokemon = function() {
 	 */
 	AttackConstructor.prototype.launchAttack = function (name, jeton) {
 		this.name = name;
+		var self = this;
 		if(jeton == 0){
 			this.pokemonAttack = Fight.myPokemon;
 			this.pokemonDefender = Fight.rivalPokemon;
@@ -606,7 +605,93 @@ var initPokemon = function() {
 		var random = getRandom(85,100);
 		var damage = Math.floor(((((2 * attackerLevel / 5 + 2) * attackerAttack * attackPower / defenderDefense) / 50) + 2) * random / 100);
 		this.pokemonDefender.currentPV -= damage
-		Fight.updateRender(this.pokemonAttack,this.pokemonDefender);
+		$('.command .talk .content').fadeOut(300,function(){
+			$(this).text(self.pokemonAttack.name+' envoie l\'attaque '+attack.name).fadeIn(300,function(){
+				Attack.attackAnim(self.name,jeton);
+				Fight.updateRender(self.pokemonAttack,self.pokemonDefender);
+			});
+		});
+	};
+	
+	/**
+	 * method : attackAnim(string name, int jeton)
+	 * @Docs : permet d'animer l'attaque 
+	 */
+	AttackConstructor.prototype.attackAnim = function (name, jeton) {
+		$myPokemonImg = $('.my-pokemon .img');
+		$rivalPokemonImg = $('.rival-pokemon .img');
+		
+		if(name == 'charge'){
+			if(jeton == 0){
+				$myPokemonImg.animate({
+					'left' : 15
+				},100,function(){
+					$myPokemonImg.animate({
+						'left':0
+					},400,function(){
+						$rivalPokemonImg.fadeOut(100,function(){
+							$(this).fadeIn(100,function(){
+								$(this).fadeOut(100,function(){
+									$(this).fadeIn(100);
+								});
+							});
+						});
+					});
+				});
+			}
+			if(jeton == 1){
+				$rivalPokemonImg.animate({
+					'left' : 200
+				},100,function(){
+					$rivalPokemonImg.animate({
+						'left':230
+					},400,function(){
+						$myPokemonImg.fadeOut(100,function(){
+							$(this).fadeIn(100,function(){
+								$(this).fadeOut(100,function(){
+									$(this).fadeIn(100);
+								});
+							});
+						});
+					});
+				});
+			}
+		} else {
+			if(jeton == 0){
+				$myPokemonImg.animate({
+					'left' : 15
+				},100,function(){
+					$myPokemonImg.animate({
+						'left':0
+					},400,function(){
+						$rivalPokemonImg.fadeOut(100,function(){
+							$(this).fadeIn(100,function(){
+								$(this).fadeOut(100,function(){
+									$(this).fadeIn(100);
+								});
+							});
+						});
+					});
+				});
+			}
+			if(jeton == 1){
+				$rivalPokemonImg.animate({
+					'left' : 200
+				},100,function(){
+					$rivalPokemonImg.animate({
+						'left':230
+					},400,function(){
+						$myPokemonImg.fadeOut(100,function(){
+							$(this).fadeIn(100,function(){
+								$(this).fadeOut(100,function(){
+									$(this).fadeIn(100);
+								});
+							});
+						});
+					});
+				});
+			}
+		}
 	};
 	
 	/**
@@ -683,6 +768,13 @@ var initPokemon = function() {
 					{
 						name : 'Jet de sable',
 						type : 'vol',
+						power : 40,
+						precision : 100
+					},
+				ViveAttaque : 
+					{
+						name : 'Vive attaque',
+						type : 'normal',
 						power : 40,
 						precision : 100
 					}
@@ -764,7 +856,7 @@ var initPokemon = function() {
 					capacite : ['charge','ecume','grosYeux'],
 					img : 'carapuce.png',
 					stat : {defense:65, attack:48, level:5, xp:0, currentPV:44, pv:44},
-					savage : false
+					savage : true
 				},
 			salameche : 
 				{
@@ -773,7 +865,7 @@ var initPokemon = function() {
 					capacite : ['griffe','flammeche','rugissement'],
 					img : 'salameche.png',
 					stat : {defense:43, attack:52, level:5, xp:0, currentPV:39, pv:39},
-					savage : false
+					savage : true
 				},
 			bulbizarre : 
 				{
@@ -782,7 +874,7 @@ var initPokemon = function() {
 					capacite : ['charge','tranchHerbe','rugissement'],
 					img : 'bulbizarre.png',
 					stat : {defense:49, attack:49, level:5, xp:0, currentPV:45, pv:45},
-					savage : false
+					savage : true
 				},
 			roucool : 
 				{
@@ -849,7 +941,7 @@ var initPokemon = function() {
 	var Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
 	var Fight = new FightConstructor();
 	var Attack = new AttackConstructor();
-	var Pokemon = new PokemonConstructor('salameche', ['griffe','flammeche','grosYeux'], 'feu', 'salameche.png', {defense:43, attack:52, level:25, xp:0, currentPV:39, pv:39});
+	var Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'feu', 'bulbizarre.png', {defense:49, attack:49, level:5, xp:0, currentPV:45, pv:45});
 	
 	
 	var items = 
