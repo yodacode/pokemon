@@ -406,6 +406,7 @@ var initPokemon = function() {
 		this.winner = null;
 		this.looser = null;
 		this.panel = $('.screen .fight');
+		this.commandBlock = this.panel.find('.command');
 		this.actionBlock = this.panel.find('.command .action');
 		this.attackBlock = this.panel.find('.command .action .attack');
 		this.doBlock = this.panel.find('.command .action .do');
@@ -502,13 +503,13 @@ var initPokemon = function() {
 	FightConstructor.prototype.doAction = function (action, pokemon) {
 		var self = this;
 		if(action == 'attack'){
-
 				this.attackBlock.hide();
 				this.doBlock.hide();
 				this.attackBlock.show();
 				this.attackBlock.find('.item').click(function(){
 					var codeAttack = $(this).find('.code').text();
 					Attack.launchAttack(codeAttack,self.jeton);
+					self.actionBlock.hide();
 				});
 
 		}
@@ -539,7 +540,7 @@ var initPokemon = function() {
 				$pokemonTeam.find('.img').animate({
 					top : 900
 				},function(){
-
+					Fight.stopFight();	
 				});
 			});	
 		} else {
@@ -559,14 +560,42 @@ var initPokemon = function() {
 	 * @Docs : Permet de stoper la fight pour revenir à l'ecran map
 	 */
 	FightConstructor.prototype.stopFight = function () {
-		this.panel.hide();
-		alert('Combat terminé');
+		//this.panel.hide();
+		//alert('Combat terminé le gagnant est '+this.winner+' le perdant est '+this.looser);
+		var self = this;
+		var content = null;
+		this.commandBlock.empty();
+		if(this.winner == 0) {
+			content = 'Top cool vous avez gagné';
+		} else if(this.winner == 1) {
+			content = 'Oooooooooooh non on a perdu';
+		}
+		this.commandBlock.append(content);
 	};
 
 	
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	
+	/**
+	 * Class : Dialogue()
+	 * @Docs : Permet de construir un dialogue
+	 */
+	var DialogueConstructor = function Dialogue(){
+		
+	};
+	
+	/**
+	 * method : startDialog(array listDialog 
+	 * @Docs : prend une liste de dialogues et les affiche à la chaine dans le bloc 
+	 */
+	DialogueConstructor.prototype.startDialogue = function (listDialogue){
+		console.log('Dialogue go');
+	}
+	
 
 
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	
 	/**
 	 * Class : Attack()
 	 * @Docs : Permet de construir une attack
@@ -594,9 +623,11 @@ var initPokemon = function() {
 			this.pokemonDefender = Fight.myPokemon;
 		}
 		
+		
 		var getRandom = function getRandomInt (min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
+		
 		var attackerLevel = this.pokemonAttack.level;
 		var defenderDefense = this.pokemonDefender.defense;
 		var attackerAttack = this.pokemonAttack.attack;
@@ -604,13 +635,31 @@ var initPokemon = function() {
 		var attackPower = attack.power;
 		var random = getRandom(85,100);
 		var damage = Math.floor(((((2 * attackerLevel / 5 + 2) * attackerAttack * attackPower / defenderDefense) / 50) + 2) * random / 100);
-		this.pokemonDefender.currentPV -= damage
+		this.pokemonDefender.currentPV -= damage;
 		$('.command .talk .content').fadeOut(300,function(){
 			$(this).text(self.pokemonAttack.name+' envoie l\'attaque '+attack.name).fadeIn(300,function(){
+			
+				console.log('pv de mon pokemon '+Fight.myPokemon.currentPV);
+				console.log('pv de rival pokemon '+Fight.rivalPokemon.currentPV);
+				
+				if(Fight.myPokemon.currentPV <= 0){
+					Fight.winner = 1;
+					Fight.looser = 0;
+				} else if(Fight.rivalPokemon.currentPV <= 0){
+					Fight.winner = 0;
+					Fight.looser = 1;
+				}
+				
 				Attack.attackAnim(self.name,jeton);
 				Fight.updateRender(self.pokemonAttack,self.pokemonDefender);
+				if(jeton == 1){
+					Fight.actionBlock.show();
+				} else {
+					Fight.actionBlock.hide();
+				}
 			});
 		});
+		
 	};
 	
 	/**
@@ -915,7 +964,6 @@ var initPokemon = function() {
 		}
 		var pokemon = name;	
 		var randomAttack = pokemon.capacite[getRandom(0,pokemon.capacite.length-1)];
-		console.log(randomAttack);
 		return randomAttack;
 	}
 
@@ -941,6 +989,7 @@ var initPokemon = function() {
 	var Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
 	var Fight = new FightConstructor();
 	var Attack = new AttackConstructor();
+	var Dialogue = new DialogueConstructor();	Dialogue.startDialogue(['phrase into','seconde phrase','troisieme phrase','quatrieme phrase']);
 	var Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'feu', 'bulbizarre.png', {defense:49, attack:49, level:5, xp:0, currentPV:45, pv:45});
 	
 	
