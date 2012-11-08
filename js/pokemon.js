@@ -414,6 +414,13 @@ var initPokemon = function() {
 		this.jeton = 0;
 		this.myPokemon = null;
 		this.rivalPokemon = null;
+		var self = this;
+		
+		this.doBlock.find('.item').click(function(){
+			var codeAction = $(this).find('.code').text();
+			self.doAction(codeAction,[self.myPokemon, self.rivalPokemon]);
+		}); 
+		
 	}
 	
 	/**
@@ -431,7 +438,8 @@ var initPokemon = function() {
 			if(nbPlay > 16){
 				window.clearInterval(timerIntro);
 				self.panel.css('background','url(img/bg-fight.jpg)');
-				Sasha.sashaDiv.fadeOut(300,Fight.loadFight([Pokemon, Pokemon.randomPokemon()],self.jeton));
+				Sasha.sashaDiv.hide();
+				Fight.loadFight([Pokemon, Pokemon.randomPokemon()],self.jeton);
 			} else {
 				if(isDisplay){
 					self.panel.hide();
@@ -444,17 +452,18 @@ var initPokemon = function() {
 			}
 		},100);	
 	};
+	 
 	
 	/**
 	 * method : loadFight(array [myPokemon, rivalPokemon])
 	 * @Docs : Permet de charger un combat 
 	 */
 	FightConstructor.prototype.loadFight = function(pokemon,jeton){
-		var self = this;
 		this.attackBlock.hide();
 		this.doBlock.hide();
 		this.myPokemon = pokemon[0];
 		this.rivalPokemon = pokemon[1];
+		var self = this;
 		
 		$('.screen .fight .panel').fadeIn(200, function(){
 			$('.my-pokemon .img').animate({
@@ -465,11 +474,18 @@ var initPokemon = function() {
 					left : 230,
 					opacity : 1
 				},500,function(){
-					self.talkBlock.append(self.rivalPokemon.name+ ' veut se battre <br/>'+self.myPokemon.name+' en Avant !').hide().fadeIn(200,function(){self.doBlock.show()});
+					Dialogue.startDialogue(
+						[
+							self.rivalPokemon.name+ ' sauvage veut se battre !',
+							self.myPokemon.name+' en Avant ! On va lui montrer de quoi on est capable',
+							'Il va falloir attaquer cet enfoiré tu es chaud ? mon petit '+self.myPokemon.name
+						]
+					);					
+					self.talkBlock.append('Sélectionner une action à effectuer');
+					self.doBlock.show();
 				});
 			});
 		});
-		
 		for(var i=0; i < pokemon.length; i++){
 			var equip = null;
 			if(i == 0) equip = 'my-pokemon';
@@ -482,19 +498,24 @@ var initPokemon = function() {
 						this.panel.find('.'+equip+' .'+j).append('<img src="'+pokemon[i][j].imgFront+'"/>');
 					}
 				} else {
-					this.panel.find('.'+equip+' .'+j).append(pokemon[i][j]);
+					this.panel.find('.'+equip+' .'+j).append('<span class="value">'+pokemon[i][j]+'</span>');
 				}
 			}
 		}	
 		for(var i = 0; i < this.myPokemon.capacite.length; i++){
-			this.attackBlock.append('<div class="item"><div class="code hidden">'+this.myPokemon.capacite[i]+'</div>'+Attack.getAttack(this.myPokemon.capacite[i]).name+'</div>');
-		}		
-		this.doBlock.find('.item').click(function(){
-			var codeAction = $(this).find('.code').text();
-			Fight.doAction(codeAction,pokemon);
-		}); 
-		
+			this.attackBlock.append(
+				'<div class="item">'+
+					'<div class="code hidden">'+
+						this.myPokemon.capacite[i]+
+					'</div>'+
+					'<div class="value">'+
+						Attack.getAttack(this.myPokemon.capacite[i]).name+
+					'</div>'+
+				'</div>'
+				);
+		}	
 	};
+	
 	
 	/**
 	 * method : doAction()
@@ -509,7 +530,6 @@ var initPokemon = function() {
 				this.attackBlock.find('.item').click(function(){
 					var codeAttack = $(this).find('.code').text();
 					Attack.launchAttack(codeAttack,self.jeton);
-					self.actionBlock.hide();
 				});
 
 		}
@@ -533,7 +553,7 @@ var initPokemon = function() {
 		}	
 		var $lifeBar = $pokemonTeam.find('.life-container .life');
 		if(RestPercentLife <= 0){
-			$pokemonTeam.find('.currentPV').text(0);
+			$pokemonTeam.find('.currentPV .value').text(0);
 			$lifeBar.animate({
 				width : RestPercentLife+'%'
 			},function(){
@@ -544,7 +564,7 @@ var initPokemon = function() {
 				});
 			});	
 		} else {
-			$pokemonTeam.find('.currentPV').text(pokemonDefender.currentPV);
+			$pokemonTeam.find('.currentPV .value').text(pokemonDefender.currentPV);
 			$lifeBar.animate({
 				width : RestPercentLife+'%'
 			},function(){
@@ -556,21 +576,40 @@ var initPokemon = function() {
 	};
 	
 	/**
+	 * method : clearFight()
+	 * @Docs : Permet vider le template de la fight
+	 */
+	FightConstructor.prototype.clearFight = function () {	
+		this.jeton = 0;
+		Fight.actionBlock.show();
+		Fight.attackBlock.empty();
+		this.panel.find('.value').empty();
+		this.panel.find('.talk .content').empty();
+		this.panel.find('.img').empty();
+		this.panel.find('.currentPV').empty();
+		this.panel.find('.rival-pokemon .img').css({left : 340, top : 0 ,opacity : 0});
+		this.panel.find('.rival-pokemon .life').css({width:100+'%'});
+		this.panel.find('.my-pokemon .img').css({left : -130, top : 65 ,opacity : 0});
+	}
+	
+	
+	
+	/**
 	 * method : stopFight()
 	 * @Docs : Permet de stoper la fight pour revenir à l'ecran map
 	 */
 	FightConstructor.prototype.stopFight = function () {
-		//this.panel.hide();
-		//alert('Combat terminé le gagnant est '+this.winner+' le perdant est '+this.looser);
 		var self = this;
-		var content = null;
-		this.commandBlock.empty();
 		if(this.winner == 0) {
-			content = 'Top cool vous avez gagné';
+			Dialogue.startDialogue(['Trooop cool vous avez gagné','Le pokemon va gagner un max de xp'],function(){
+				Sasha.sashaDiv.show();
+				self.panel.hide();
+				self.clearFight();			
+		});					
 		} else if(this.winner == 1) {
-			content = 'Oooooooooooh non on a perdu';
+			Dialogue.startDialogue(['Oooooooooooh non on a perdu']);					
 		}
-		this.commandBlock.append(content);
+		
 	};
 
 	
@@ -581,18 +620,68 @@ var initPokemon = function() {
 	 * @Docs : Permet de construir un dialogue
 	 */
 	var DialogueConstructor = function Dialogue(){
-		
+		this.next = $('.button.a');
+		var self = this;
+		this.blockDialogue = $('.command .dialogue');
+		this.next.click(function(){
+			if (self.listDialogue.length <= 0) {
+				return;
+			}
+			if (self.animStart){
+				self.blockDialogue.find('.content').stop().css({width:300,height:60});
+				self.animStart = false;
+				return;
+			}
+			self.currentDialogue += 1;
+			if(self.currentDialogue < self.listDialogue.length){
+				self.blockDialogue.find('.content').empty().css({width:0,height:22});
+				self.animation(self.currentDialogue);
+			} else {
+
+				self.listDialogue = [];
+				self.blockDialogue.fadeOut(function () {
+					if (typeof self.callback == 'function') {
+						var cb = self.callback;
+						self.callback = null;
+						return cb();
+					}
+			  });
+			}
+		});	
 	};
+	
+	/**
+	 * method : startDialog(array listDialog, [function callback]) 
+	 * @Docs : prend une liste de dialogues et les affiche à la chaine dans le bloc 
+	 */
+	DialogueConstructor.prototype.startDialogue = function (listDialogue, callback){
+		this.listDialogue = listDialogue;
+		this.currentDialogue = 0;
+		this.callback = callback || null;
+		this.animation();
+	}
+	
 	
 	/**
 	 * method : startDialog(array listDialog 
 	 * @Docs : prend une liste de dialogues et les affiche à la chaine dans le bloc 
 	 */
-	DialogueConstructor.prototype.startDialogue = function (listDialogue){
-		console.log('Dialogue go');
-	}
-	
+	DialogueConstructor.prototype.animation = function (){
+		this.blockDialogue.show().find('.content').html(this.listDialogue[this.currentDialogue]);
+		this.animStart = true;
+		var self = this;
+		this.blockDialogue.find('.content').animate({
+			width : 300
+		},300,function(){
+			$(this).animate({
+				height:60
+			},300,function(){
+				$(this).append('<div class="arrow"></div>');
+				self.animStart = false;
+			});
+		});
 
+	};
 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	
@@ -621,13 +710,10 @@ var initPokemon = function() {
 		} else if(jeton == 1) {
 			this.pokemonAttack = Fight.rivalPokemon;
 			this.pokemonDefender = Fight.myPokemon;
-		}
-		
-		
+		}	
 		var getRandom = function getRandomInt (min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
-		}
-		
+		}		
 		var attackerLevel = this.pokemonAttack.level;
 		var defenderDefense = this.pokemonDefender.defense;
 		var attackerAttack = this.pokemonAttack.attack;
@@ -636,20 +722,18 @@ var initPokemon = function() {
 		var random = getRandom(85,100);
 		var damage = Math.floor(((((2 * attackerLevel / 5 + 2) * attackerAttack * attackPower / defenderDefense) / 50) + 2) * random / 100);
 		this.pokemonDefender.currentPV -= damage;
-		$('.command .talk .content').fadeOut(300,function(){
-			$(this).text(self.pokemonAttack.name+' envoie l\'attaque '+attack.name).fadeIn(300,function(){
-			
-				console.log('pv de mon pokemon '+Fight.myPokemon.currentPV);
-				console.log('pv de rival pokemon '+Fight.rivalPokemon.currentPV);
-				
+		Dialogue.startDialogue(
+			[
+				this.pokemonAttack.name+' se prépare à attaquer',
+				this.pokemonAttack.name+' envoie l\'attaque '+this.name
+			], function () { 
 				if(Fight.myPokemon.currentPV <= 0){
 					Fight.winner = 1;
 					Fight.looser = 0;
 				} else if(Fight.rivalPokemon.currentPV <= 0){
 					Fight.winner = 0;
 					Fight.looser = 1;
-				}
-				
+				}		
 				Attack.attackAnim(self.name,jeton);
 				Fight.updateRender(self.pokemonAttack,self.pokemonDefender);
 				if(jeton == 1){
@@ -657,9 +741,7 @@ var initPokemon = function() {
 				} else {
 					Fight.actionBlock.hide();
 				}
-			});
-		});
-		
+			});	
 	};
 	
 	/**
@@ -987,10 +1069,10 @@ var initPokemon = function() {
 	var Sprite = new SpriteConstructor();
 	var Control = new ControlConstructor();
 	var Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
+	var Dialogue = new DialogueConstructor();	
 	var Fight = new FightConstructor();
 	var Attack = new AttackConstructor();
-	var Dialogue = new DialogueConstructor();	Dialogue.startDialogue(['phrase into','seconde phrase','troisieme phrase','quatrieme phrase']);
-	var Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'feu', 'bulbizarre.png', {defense:49, attack:49, level:5, xp:0, currentPV:45, pv:45});
+	var Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'plante', 'bulbizarre.png', {defense:49, attack:49, level:60, xp:0, currentPV:45, pv:45});
 	
 	
 	var items = 

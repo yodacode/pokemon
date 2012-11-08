@@ -57,6 +57,9 @@
 							</div>
 						</div>
 						<div class="command">
+							<div class="dialogue">
+								<div class="content"></div>
+							</div>
 							<div class="talk">
 								<div class="content"></div>
 							</div>
@@ -96,6 +99,12 @@
 				<div class="button start"></div>
 			</div>
 		</div>
+		
+		
+		
+		
+		
+	
 		
 	</body>
 </html>

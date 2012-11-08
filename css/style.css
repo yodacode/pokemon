@@ -306,6 +306,34 @@
 	line-height: 18px;
 }
 
+.fight .command .dialogue {
+	background:#FFF;
+	height:90px;
+	position:absolute;
+	z-index:1000;
+	top:0px;
+	width:100%;
+}
+
+.fight .command .dialogue .content {
+	margin: 7px 0 0 7px;
+	width: 0px;
+	background: #FFF;
+	height: 22px;
+	overflow: hidden;
+	line-height:25px;
+	position:relative;
+}
+
+.fight .command .dialogue .arrow{
+	width:15px;
+	height:15px;
+	background:url(../img/arrrow-dialogue.jpg);
+	position:absolute;
+	bottom:7px;
+	right:7px;
+}
+
 .fight .command .talk .content{
 	margin:7px 0 0 7px;
 }
