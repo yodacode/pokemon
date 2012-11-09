@@ -16,6 +16,18 @@
 	display:none;
 }
 
+.loader {
+	font-size:20px;
+	padding-top: 118px;
+	text-align: center;
+	color:#000;
+	display:none;
+}
+
+.player {
+	display:none;
+}
+
 /*-------gameboy--------*/
 
 .gameboy {
@@ -123,7 +135,7 @@
 	height: 270px;
 	position: relative;
 	margin-left: 83px;
-	background: #9ABB30;
+	background: #FFF;
 }
 
 .screen .sasha{

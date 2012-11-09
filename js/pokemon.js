@@ -181,7 +181,7 @@ var initPokemon = function() {
 	 * return action
 	 */
 	SashaConstructor.prototype.getAction = function(){
-		if(Math.floor(Math.random()*Map.map[Sasha.y][Sasha.x].proba) == 1){
+		if(Math.floor(Math.random()*Map.map[Sasha.y][Sasha.x].proba) == 0){
 			return Map.map[Sasha.y][Sasha.x].action;
 		} else {
 			return null;
@@ -196,6 +196,8 @@ var initPokemon = function() {
 	SashaConstructor.prototype.doAction = function(action){
 		if(action == 'fight'){
 			Fight.playFight();
+		} else if(action == 'change') {
+			Init.updateRender(Map.map[Sasha.y][Sasha.x].map);
 		}
  	}
 	
@@ -268,6 +270,7 @@ var initPokemon = function() {
 	 * @Docs : Permet de catché la direction et l'etat du bouton  
 	 */
 	var ControlConstructor = function Control() {
+		this.allow = true;
 		var self = this;
 		this.statment = {
 			up : 'nopress',
@@ -275,18 +278,20 @@ var initPokemon = function() {
 			right : 'nopress',
 			left : 'nopress'
 		}
-		$('.arrow').mousedown(function(){
-			Sasha.direction = $(this).find('.direction').text();
-			self.statment[Sasha.direction] = 'press';
-			if (Sasha.timerMoveTo) return ;
-			Sasha.playMove(Sasha.direction);
-			Sasha.moveTo(Sasha.direction);
-		});
-		$(window).mouseup(function () {
-			self.statment[Sasha.direction] = 'nopress';
-			Sasha.stopMove(Sasha.direction);
-			
-		});
+		if(this.allow){
+			$('.arrow').mousedown(function(){
+				Sasha.direction = $(this).find('.direction').text();
+				self.statment[Sasha.direction] = 'press';
+				if (Sasha.timerMoveTo) return ;
+				Sasha.playMove(Sasha.direction);
+				Sasha.moveTo(Sasha.direction);
+			});
+			$(window).mouseup(function () {
+				self.statment[Sasha.direction] = 'nopress';
+				Sasha.stopMove(Sasha.direction);
+				
+			});
+		}
 	};
 	
 	
@@ -305,6 +310,7 @@ var initPokemon = function() {
 				this.map[y][x] = new CellConstructor(x,y);
 			}
 		}
+		
 	};
 	
 
@@ -320,6 +326,7 @@ var initPokemon = function() {
 					currentCell.addSprite(items[i].value.img,x,y);
 					currentCell.action = items[i].value.action;
 					currentCell.proba = items[i].value.proba;
+					currentCell.map = items[i].value.map;
 				}
 			}
 		}
@@ -356,6 +363,7 @@ var initPokemon = function() {
 		this.img = 'get-image.php?img=img/'+img;
 		this.action = action.action;
 		this.proba = action.proba;
+		this.map = action.map;
 	};
 
 	
@@ -432,6 +440,9 @@ var initPokemon = function() {
 		var nbPlay = 0;
 		var isDisplay = false;
 		var self = this;
+		SoundCity.soundPause();
+		SoundFight.soundPlay();
+	
 		self.panel.css('background-color','#000');
 		$('.screen .fight .panel').hide();
 		timerIntro = window.setInterval(function(){
@@ -604,11 +615,16 @@ var initPokemon = function() {
 			Dialogue.startDialogue(['Trooop cool vous avez gagné','Le pokemon va gagner un max de xp'],function(){
 				Sasha.sashaDiv.show();
 				self.panel.hide();
-				self.clearFight();			
+				self.clearFight();
+				SoundFight.soundPause();
+			
+				SoundCity = new SoundConstructor('pallet-town');
+				SoundCity.soundPlay();
 		});					
 		} else if(this.winner == 1) {
 			Dialogue.startDialogue(['Oooooooooooh non on a perdu']);					
 		}
+	
 		
 	};
 
@@ -1049,8 +1065,59 @@ var initPokemon = function() {
 		return randomAttack;
 	}
 
+	
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	
+	/**
+	 * Class : Sound(string sound)
+	 * @Docs : Permet de construir un player audio
+	 */
+	var SoundConstructor = function Sound (sound) {
+		
+		
+		$('body').prepend('<audio class="player '+sound+'" controls="controls" loop="loop"><source src="sound/'+sound+'.mp3" type="audio/mp3"></source></audio>');
+		this.sound = document.querySelector('.'+sound+'');
+	}
+
+	/**
+	 * method : play()
+	 * @Docs : Permet de jouer le son
+	 */
+	SoundConstructor.prototype.soundPlay = function () {
+	
+		this.sound.play();
+	}
+	
+	/**
+	 * method : pause()
+	 * @Docs : Permet de mettre le son sur pause
+	 */
+	SoundConstructor.prototype.soundPause = function () {
+		this.sound.pause();
+	}
+	
+	/**
+	 * method : stop()
+	 * @Docs : Permet d'arrêter le son
+	 */
+	SoundConstructor.prototype.soundStop = function () {
+		this.sound.stop();
+	}
+	
+	/**
+	 * method : volume()
+	 * @Docs : Permet de régler le volume du son
+	 */
+	SoundConstructor.prototype.volume = function () {
+
+	}
+	
+	
+	
+	
 
 
+	
 	
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -1062,26 +1129,88 @@ var initPokemon = function() {
 	
 	
 	/**
-	 * @Docs : Instaciation des objets 
+	 * method : 
+	 * @Docs : 
+	 * return : 
 	 */
-	var Screen = new ScreenConstructor($('.screen'));
-	var Sasha = new SashaConstructor($('.sasha'), 'down', {top : 6, left : 5});
-	var Sprite = new SpriteConstructor();
-	var Control = new ControlConstructor();
-	var Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
-	var Dialogue = new DialogueConstructor();	
-	var Fight = new FightConstructor();
-	var Attack = new AttackConstructor();
-	var Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'plante', 'bulbizarre.png', {defense:49, attack:49, level:60, xp:0, currentPV:45, pv:45});
-	
-	
-	var items = 
-		[
+	var InitConstructor = function Init() {
 		
-			//Création map professeur Chen
+		Screen = new ScreenConstructor($('.screen'));
+		
+		Sprite = new SpriteConstructor();
+		
+		Control = new ControlConstructor();
+		
+		Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
+		
+		Dialogue = new DialogueConstructor();	
+		
+		Fight = new FightConstructor();
+		
+		Attack = new AttackConstructor();
+		
+		Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'plante', 'bulbizarre.png', {defense:49, attack:49, level:60, xp:0, currentPV:45, pv:45});
+		
+		Sasha = new SashaConstructor($('.sasha'), 'down', {top : 6, left : 5});
+		
+		SoundCity = new SoundConstructor('pallet-town');
+		SoundFight = new SoundConstructor('fight-sound');
+
+		SoundCity.soundPlay();
+		
+		$('.pause').click(function(){SoundCity.soundPause()});
+		$('.play').click(function(){SoundCity.soundPlay()});
+		
+		
+		this.updateRender();
+		var self = this;	
+	}
+	
+	
+	/**
+	 * method : 
+	 * @Docs : 
+	 * return : 
+	 */
+	InitConstructor.prototype.updateRender = function (render) {
+		this.map = null;
+		var self = this;
+
+		if(render != null) {
+			this.map = render;
+			Init.initCity();
+			return;
+		} else {
+			$('.loader').fadeIn();
+			$('.sasha').hide();
+			$.ajax({
+				type : 'GET',
+				url : 'request/init-render.php',
+				dataType :'json',
+				success : function (e) {
+					Init.initChen();
+					$('.sasha').show();
+					$('.loader').fadeOut();
+				},
+				error : function () {
+					console.log(arguments);
+				}
+			});
+		}
+	}
+	
+	/**
+	 * method : 
+	 * @Docs : 
+	 * return : 
+	 */
+	InitConstructor.prototype.initChen = function () {
+		
+		items = 
+		[
 			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/chen/bg-floor.jpg', { action : 'allow'})},
 			{name : 'wall', value :  new ItemConstructor(0, 1, 2, 9, 'maps/chen/wall-top.jpg', { action : 'conflict', proba : 1})},
-			{name : 'exit', value :  new ItemConstructor(8, 4, 1, 2, 'maps/chen/exit.jpg', { action : 'allow'})},
+			{name : 'exit', value :  new ItemConstructor(8, 4, 1, 2, 'maps/chen/exit.jpg', { action : 'change', proba : 1, map : 'city'})},
 			{name : 'computer', value :  new ItemConstructor(1, 1, 3, 3, 'maps/chen/computer.png', { action : 'conflict', proba : 1})},
 			{name : 'machine', value :  new ItemConstructor(2, 6, 1, 1, 'maps/chen/machine-small.jpg', { action : 'conflict', proba : 1})},
 			{name : 'bigMachine', value :  new ItemConstructor(1, 7, 2, 1, 'maps/chen/machine-big.jpg', { action : 'conflict', proba : 1})},
@@ -1091,17 +1220,47 @@ var initPokemon = function() {
 			{name : 'chen', value :  new ItemConstructor(3, 5, 1, 1, 'maps/chen/chen.png', { action : 'conflict', proba : 1})},
 			{name : 'table', value :  new ItemConstructor(4, 6, 2, 3, 'maps/chen/desk.png', { action : 'conflict', proba : 1})},
 			{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
-			
-			//Création map bourg palet
-			
-		
 		];
-
 		Map.addItems(items);
+	}
+	
+	/**
+	 * method : 
+	 * @Docs : 
+	 * return : 
+	 */
+	InitConstructor.prototype.initCity = function () {
+		Sasha.x = 6;
+		Sasha.y = 3;
+		Sasha.updateRender({x:Sasha.x,y:Sasha.y},0);
+		items = 
+		[
+			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/chen/bg-floor.jpg', { action : 'allow'})},
+			{name : 'wall', value :  new ItemConstructor(0, 1, 2, 9, 'maps/chen/wall-top.jpg', { action : 'conflict', proba : 1})},
+			{name : 'exit', value :  new ItemConstructor(8, 4, 1, 2, 'maps/chen/exit.jpg', { action : 'allow'})},
+			{name : 'machine', value :  new ItemConstructor(2, 6, 1, 1, 'maps/chen/machine-small.jpg', { action : 'conflict', proba : 1})},
+			{name : 'bigMachine', value :  new ItemConstructor(1, 7, 2, 1, 'maps/chen/machine-big.jpg', { action : 'conflict', proba : 1})},
+			{name : 'bigMachine', value :  new ItemConstructor(1, 8, 2, 1, 'maps/chen/machine-big.jpg', { action : 'conflict', proba : 1})},
+			{name : 'wallBorderLeft', value :  new ItemConstructor(0, 0, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
+			{name : 'wallBorderRight', value :  new ItemConstructor(0, 10, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
+			{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
+		];
+		Map.addItems(items);
+	}
+	
+
+	
+	Init = new InitConstructor();
+	
+	
+
+	
+	
 	
 };
 
 
+	
 
 
 $(function () { setTimeout(initPokemon, 50); });

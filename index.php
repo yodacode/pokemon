@@ -7,14 +7,18 @@
 		<link type="text/css" rel="stylesheet" href="css/sanitize.css" media="screen"/>
 		<link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
 		<title>Pokemon</title>
+		 <script type="text/javascript">
+					//Init.startInit();
+		</script>
 	</head>
 	<body>
 		
+		<div class="pause">pause</div>
+		<div class="play">play</div>
 		<div class="overflow" style="width:1px;height:1px">&nbsp;<?php include('preload-img.php');?></div>
-		
-		<h1>Pokemon</h1>
 		<div class="gameboy">
 			<div class="screen">
+			<div class="loader">Chargement...</div>
 				<div class="fight">
 					<div class="panel">
 						<div class="rival-pokemon">
@@ -99,12 +103,6 @@
 				<div class="button start"></div>
 			</div>
 		</div>
-		
-		
-		
-		
-		
 	
-		
 	</body>
 </html>
