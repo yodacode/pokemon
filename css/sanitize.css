@@ -1,0 +1,249 @@
+/******* Reset **********************/
+html, body, applet, object, iframe,
+p, blockquote, pre, h1, h2, h3, h4, h5, h6, sup, sub,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, 
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+div, span {
+  vertical-align: middle;
+}
+
+h1, h2, h3, h4, h5, h6, sup, sub
+{
+  font-size: 1em;
+}
+
+a, i, u, b, address, caption, cite, code, dfn,
+em, strong, th, var, pre
+{
+  font-style: normal;
+	font-weight: normal;
+  text-decoration: none;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  font-family: arial, helvetica, sans-serif;
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a img {
+  border: 0;
+  vertical-align: middle;
+}
+
+input , textarea, select
+{
+ outline: 0;
+ margin: 0;
+ text-transform: none;
+}
+/******* Axessia **********************/
+
+.axessia .container
+{
+  overflow: hidden;
+}
+
+.axessia .center-1000
+{
+  width: 1000px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.axessia .hidden
+{
+  display: none;
+}
+
+.axessia .f-left
+{
+  float: left;
+}
+
+.axessia .f-right
+{
+  float: right;
+}
+
+.axessia .no-selectable
+{
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.axessia .not-loaded
+{
+  visibility: hidden;
+}
+
+.axessia .no-screen
+{
+  display: none;
+}
+
+.axessia .valign
+{
+  vertical-align: middle;
+}
+
+.axessia .button, .axessia .root-link
+{
+  cursor: pointer;
+}
+
+.axessia .sizeless
+{
+  height: 0px;
+  overflow: visible;
+}
+
+.axessia .margined
+{
+  margin: 10px;
+}
+
+.axessia .padded
+{
+  padding: 10px;
+}
+
+.axessia sup
+{
+  vertical-align: super;
+  font-size: 0.6em;
+}
+
+.axessia form.submitting
+{
+  cursor: wait;
+}
+
+.axessia form.submitting input[type=submit]
+{
+  filter: alpha(opacity=60);  /* internet explorer */
+	-khtml-opacity: 0.6;       /* khtml, old safari */
+	-moz-opacity: 0.6;        /* mozilla, netscape */
+	opacity: 0.6;            /* fx, safari, opera */
+  cursor: not-allowed;  
+}
+
+.axessia .field {
+  margin: 1px;
+}
+
+.axessia span.field {
+  display: inline-block;
+}
+  
+.axessia .field.incorrect {
+  outline: 1px solid #c33;
+}
+
+.strong{
+	font-weight:bold;
+}
+
+.small{
+	font-size:11px;
+}
+
+.clear{
+	clear:both;
+}
+
+.floatleft{
+	float:left;
+}
+
+.floatright{
+	float:right;
+}
+
+.list li{
+	margin-bottom:3px;
+}
+
+.auto{
+	margin:0 auto;
+}
+
+.textright{
+	text-align:right;
+}
+
+.textleft{
+	text-align:left;
+}
+
+.textcenter{
+	text-align:center;
+}
+
+.spacer{
+  display:block;
+  height:15px;
+}
+
+
+
+/********** PONDERATED RULES ******/
+.axessia .mh680 { min-height: 680px; }
+
+.axessia .mr200 { margin-right: 200px; }
+.axessia .ml200 { margin-left: 200px; }
+
+.axessia .w200 { width: 200px; }
+.axessia .w400 { width: 400px; }
+.axessia .w600 { width: 600px; }
+
+
+/********** DEBUG PART ***********/
+.axessia .debug { background-color: #ddd; }
+.axessia .debug1 { background-color: #fc0; }
+.axessia .debug2 { background-color: #0fc; }
+
+/************* BLOCK ******************/
+.axessia .block { overflow: hidden; }
+.axessia .block-left { float: left; }
+.axessia .block-right { float: right; }
