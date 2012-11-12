@@ -1113,12 +1113,6 @@ var initPokemon = function() {
 	}
 	
 	
-	
-	
-
-
-	
-	
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -1162,42 +1156,77 @@ var initPokemon = function() {
 		$('.play').click(function(){SoundCity.soundPlay()});
 		
 		
-		this.updateRender();
+		this.getRender();
 		var self = this;	
 	}
 	
 	
 	/**
-	 * method : 
-	 * @Docs : 
-	 * return : 
+	 * method : updateRender(string map)
+	 * @Docs : permet de mettre à jour le render
 	 */
 	InitConstructor.prototype.updateRender = function (render) {
 		this.map = null;
 		var self = this;
-
-		if(render != null) {
-			this.map = render;
+		$('.loader').fadeIn();
+		switch (render){
+		case 'city' : 
 			Init.initCity();
-			return;
-		} else {
-			$('.loader').fadeIn();
-			$('.sasha').hide();
-			$.ajax({
-				type : 'GET',
-				url : 'request/init-render.php',
-				dataType :'json',
-				success : function (e) {
-					Init.initChen();
-					$('.sasha').show();
-					$('.loader').fadeOut();
-				},
-				error : function () {
-					console.log(arguments);
-				}
-			});
+			break;
+		case 'home' : 
+			Init.initHome();
+			break;
+		case 'chen' : 
+			Init.initChen();
+			break;
 		}
-	}
+		$.ajax({
+			type : 'GET',
+			url : 'request/update-map.php?userid='+1+'&map='+render,
+			dataType :'json',
+			success : function (e) {
+				$('.loader').fadeOut(900);
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
+		return;
+	};
+	
+	/**
+	 * method : getRender()
+	 * @Docs : permet d'obtenir le render au chargment de la page
+	 */
+	InitConstructor.prototype.getRender = function () {
+		$('.loader').fadeIn();
+		$('.sasha').hide();
+		$.ajax({
+			type : 'GET',
+			url : 'request/init-render.php?userid='+1,
+			dataType :'json',
+			success : function (e) {
+				switch (e.map){
+				case 'city' : 
+					Init.initCity();
+					break;
+				case 'home' : 
+					Init.initHome();
+					break;
+				case 'chen' : 
+					Init.initChen();
+					break;
+				}				
+				$('.sasha').show();
+				$('.loader').fadeOut();
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
+	};
+	
+	
 	
 	/**
 	 * method : 
@@ -1205,7 +1234,9 @@ var initPokemon = function() {
 	 * return : 
 	 */
 	InitConstructor.prototype.initChen = function () {
-		
+		Sasha.x = 5;
+		Sasha.y = 8;
+		Sasha.updateRender({x:Sasha.x,y:Sasha.y},0);
 		items = 
 		[
 			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/chen/bg-floor.jpg', { action : 'allow'})},
@@ -1219,7 +1250,7 @@ var initPokemon = function() {
 			{name : 'wallBorderRight', value :  new ItemConstructor(0, 10, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
 			{name : 'chen', value :  new ItemConstructor(3, 5, 1, 1, 'maps/chen/chen.png', { action : 'conflict', proba : 1})},
 			{name : 'table', value :  new ItemConstructor(4, 6, 2, 3, 'maps/chen/desk.png', { action : 'conflict', proba : 1})},
-			{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
+			//{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
 		];
 		Map.addItems(items);
 	}
@@ -1230,27 +1261,91 @@ var initPokemon = function() {
 	 * return : 
 	 */
 	InitConstructor.prototype.initCity = function () {
-		Sasha.x = 6;
-		Sasha.y = 3;
+		Sasha.x = 2;
+		Sasha.y = 2;
 		Sasha.updateRender({x:Sasha.x,y:Sasha.y},0);
 		items = 
 		[
-			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/chen/bg-floor.jpg', { action : 'allow'})},
-			{name : 'wall', value :  new ItemConstructor(0, 1, 2, 9, 'maps/chen/wall-top.jpg', { action : 'conflict', proba : 1})},
-			{name : 'exit', value :  new ItemConstructor(8, 4, 1, 2, 'maps/chen/exit.jpg', { action : 'allow'})},
-			{name : 'machine', value :  new ItemConstructor(2, 6, 1, 1, 'maps/chen/machine-small.jpg', { action : 'conflict', proba : 1})},
-			{name : 'bigMachine', value :  new ItemConstructor(1, 7, 2, 1, 'maps/chen/machine-big.jpg', { action : 'conflict', proba : 1})},
-			{name : 'bigMachine', value :  new ItemConstructor(1, 8, 2, 1, 'maps/chen/machine-big.jpg', { action : 'conflict', proba : 1})},
-			{name : 'wallBorderLeft', value :  new ItemConstructor(0, 0, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
-			{name : 'wallBorderRight', value :  new ItemConstructor(0, 10, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
-			{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
+			//Création map bourg palet
+			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/bourg/bg-floor.jpg', { action : 'allow'})},
+			{name : 'treeLeft', value :  new ItemConstructor(0, 0, 9, 1, 'maps/bourg/tree.png', { action : 'conflict', proba : 1})},
+			{name : 'treeRight', value :  new ItemConstructor(0, 10, 9, 1, 'maps/bourg/tree.png', { action : 'conflict', proba : 1})},
+			{name : 'treeBot', value :  new ItemConstructor(8, 7, 1, 4, 'maps/bourg/treeTop.png', { action : 'conflict', proba : 1})},
+			{name : 'treeTop1', value :  new ItemConstructor(0, 1, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
+				{name : 'treeTop2', value :  new ItemConstructor(0, 5, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
+				{name : 'treeTop3', value :  new ItemConstructor(0, 9, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
+			{name : 'home', value :  new ItemConstructor(0, 2, 3, 3, 'maps/bourg/home.png', { action : 'conflict', proba : 1})},
+			{name : 'home', value :  new ItemConstructor(0, 6, 3, 3, 'maps/bourg/home.png', { action : 'conflict', proba : 1})},
+			{name : 'mailBox', value :  new ItemConstructor(2, 1, 1, 1, 'maps/bourg/mailBox.png', { action : 'conflict', proba : 1})},
+			{name : 'mailBox', value :  new ItemConstructor(2, 9, 1, 1, 'maps/bourg/mailBox.png', { action : 'conflict', proba : 1})},
+			{name : 'labo', value :  new ItemConstructor(4, 5, 3, 4, 'maps/bourg/labo2.png', { action : 'conflict', proba : 1})},
+			{name : 'grassLeft', value :  new ItemConstructor(4, 1, 3, 1, 'maps/bourg/grassLeft.png', { action : 'fight', proba : 3})},
+				{name : 'grassMid', value :  new ItemConstructor(4, 2, 3, 1, 'maps/bourg/grass.png', { action : 'fight', proba : 3})},
+				{name : 'grassRight', value :  new ItemConstructor(4, 3, 3, 1, 'maps/bourg/grassRight.png', { action : 'fight', proba : 3})},
+			{name : 'grassLeft', value :  new ItemConstructor(7, 7, 1, 1, 'maps/bourg/grassLeft.png', { action : 'fight', proba : 3})},
+				{name : 'grassMid', value :  new ItemConstructor(7, 8, 1, 1, 'maps/bourg/grass.png', { action : 'fight', proba : 3})},
+				{name : 'grassRight', value :  new ItemConstructor(7, 9, 1, 1, 'maps/bourg/grassRight.png', { action : 'fight', proba : 3})},
+			{name : 'bar', value :  new ItemConstructor(7, 1, 1, 3, 'maps/bourg/bar.png', { action : 'conflict', proba : 1})},
+			{name : 'waterL', value :  new ItemConstructor(8, 1, 1, 2, 'maps/bourg/waterL.png', { action : 'fight', proba : 3})},
+			{name : 'waterM', value :  new ItemConstructor(8, 3, 1, 2, 'maps/bourg/waterM.png', { action : 'fight', proba : 3})},
+			{name : 'waterR', value :  new ItemConstructor(8, 5, 1, 2, 'maps/bourg/waterR.png', { action : 'fight', proba : 3})},
+			{name : 'exit', value :  new ItemConstructor(2, 2, 1, 1, '', { action : 'change', proba : 1, map : 'chen'})},
+			{name : 'exit', value :  new ItemConstructor(2, 6, 1, 1, '', { action : 'change', proba : 1, map : 'home'})},
+			{name : 'exit', value :  new ItemConstructor(6, 5, 1, 1, '', { action : 'change', proba : 1, map : 'chen'})},
 		];
 		Map.addItems(items);
-	}
+	};
+	
+	/**
+	 * method : 
+	 * @Docs : 
+	 * return : 
+	 */
+	InitConstructor.prototype.initHome = function () {
+		Sasha.x = 2;
+		Sasha.y = 2;
+		Sasha.updateRender({x:Sasha.x,y:Sasha.y},0);
+		items = 
+		[
+			//Création map maison de maman
+			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/maison/floor.png', { action : 'allow'})},
+			{name : 'enter', value :  new ItemConstructor(1, 0, 2, 1, 'maps/maison/enter.png', { action : 'change', proba : 1, map : 'city'})},
+			//{name : 'enter', value :  new ItemConstructor(2, 6, 1, 1, 'maps/chen/exit.jpg', { action : 'change', proba : 1, map : 'home'})},
+			{name : 'carpetTop', value :  new ItemConstructor(2, 3, 1, 4, 'maps/maison/carpetTop.png', { action : 'allow'})},
+				{name : 'carpetMid', value :  new ItemConstructor(3, 3, 3, 4, 'maps/maison/carpetMid.png', { action : 'allow'})},
+				{name : 'carpetBot', value :  new ItemConstructor(6, 3, 1, 4, 'maps/maison/carpetBot.png', { action : 'allow'})},
+			{name : 'wall', value :  new ItemConstructor(0, 0, 1, 3, 'maps/maison/wall.png', { action : 'conflict', proba : 1})},
+				{name : 'wallWin', value :  new ItemConstructor(0, 3, 1, 1, 'maps/maison/wallWin.png', { action : 'conflict', proba : 1})},
+				{name : 'wall', value :  new ItemConstructor(0, 4, 1, 3, 'maps/maison/wall.png', { action : 'conflict', proba : 1})},
+				{name : 'wallWin', value :  new ItemConstructor(0, 7, 1, 1, 'maps/maison/wallWin.png', { action : 'conflict', proba : 1})},
+				{name : 'wall', value :  new ItemConstructor(0, 8, 1, 3, 'maps/maison/wall.png', { action : 'conflict', proba : 1})},
+			{name : 'bar', value :  new ItemConstructor(8, 1, 1, 9, 'maps/maison/bar.png', { action : 'conflict', proba : 1})},
+			{name : 'stat', value :  new ItemConstructor(3, 0, 2, 1, 'maps/maison/stat.png', { action : 'conflict', proba : 1})},
+			
+			{name : 'plant1', value :  new ItemConstructor(5, 0, 4, 1, 'maps/maison/plant1.png', { action : 'conflict', proba : 1})},
+			{name : 'plant2', value :  new ItemConstructor(5, 10, 2, 1, 'maps/maison/plant2.png', { action : 'conflct', proba : 1})},
+			{name : 'plant2', value :  new ItemConstructor(7, 10, 2, 1, 'maps/maison/plant2.png', { action : 'fight', proba : 2})},
+			{name : 'tv', value :  new ItemConstructor(3, 4, 1, 2, 'maps/maison/tv.png', { action : 'conflict', proba : 1})},
+			{name : 'poof', value :  new ItemConstructor(5, 4, 1, 2, 'maps/maison/poof.png', { action : 'allow', proba : 1})},
+			{name : 'pc', value :  new ItemConstructor(1, 9, 1, 2, 'maps/maison/pc.png', { action : 'conflict', proba : 1})},
+			{name : 'poof', value :  new ItemConstructor(2, 9, 1, 1, 'maps/maison/poof.png', { action : 'allow', proba : 1})},
+			{name : 'bed', value :  new ItemConstructor(4, 8, 2, 1, 'maps/maison/bed.png', { action : 'conflict', proba : 1})},
+			{name : 'commode', value :  new ItemConstructor(6, 1, 1, 2, 'maps/maison/commode.png', { action : 'conflict', proba : 1})},
+			{name : 'commode', value :  new ItemConstructor(6, 8, 1, 2, 'maps/maison/commode.png', { action : 'conflict', proba : 1})} 
+		];
+		Map.addItems(items);
+	};
+	
 	
 
 	
 	Init = new InitConstructor();
+	
+	
+			
+			
+					
+			
 	
 	
 

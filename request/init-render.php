@@ -2,7 +2,8 @@
 	
 	require_once("../config/connexion.php");
 	
-	$id = 1;
+	$id = $_GET['userid'];
+
 	
 	$req = $pkm->prepare('SELECT * FROM users WHERE id= ?');
 	$req->execute(array($id));

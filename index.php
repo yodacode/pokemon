@@ -87,7 +87,7 @@
 				<div class="arrow top btnUp"><span class="direction">up</span></div>
 				<div class="overflow">
 					<div class="arrow left"><span class="direction">left</span></div>
-					<div class="arrow middle"><span class="direction">middle</span></div>
+					<div class="arrow middle"><span class="direction">up</span></div>
 					<div class="arrow right"><span class="direction">right</span></div>
 					<div class="arrow bottom"><span class="direction">down</span></div>
 				</div>
