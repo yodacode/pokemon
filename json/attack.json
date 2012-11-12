@@ -1,0 +1,68 @@
+{
+	"flammeche":{
+		"name":"Flammèche",
+		"type":"feu",
+		"power":40,
+		"precision":100
+	},
+	"rugissement":{
+		"name":"Rugissement",
+		"type":"normal",
+		"power":0,
+		"precision":100
+	},
+	"grosYeux":{
+		"name":"Gros yeux",
+		"type":"normal",
+		"power":0,
+		"precision":100
+		},
+	"griffe":{
+		"name":"griffe",
+		"type":"normal",
+		"power":40,
+		"precision":100
+	},
+	"charge":{
+		"name":"Charge",
+		"type":"normal",
+		"power":50,
+		"precision":100
+	},
+	"mimiQueue":{
+		"name":"Mimi queue",
+		"type":"normal",
+		"power":0,
+		"precision":100
+	},
+	"ecume":{
+		"name":"Ecume",
+		"type":"eau",
+		"power":20,
+		"precision":100
+	},
+	"tranchHerbe":{
+		"name":"Tranch'Herbe",
+		"type":"plante",
+		"power":55,
+		"precision":95
+	},
+	"jetSable":{
+		"name":"Jet de sable",
+		"type":"sol",
+		"power":0,
+		"precision":100
+	},
+	"tornade":{
+		"name":"Jet de sable",
+		"type":"vol",
+		"power":40,
+		"precision":100
+	},
+	"ViveAttaque":{
+		"name":"Vive attaque",
+		"type":"normal",
+		"power":40,
+		"precision":100
+	}
+}
