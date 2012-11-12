@@ -12,6 +12,22 @@
 	clear:both;
 }
 
+.hidden {
+	display:none;
+}
+
+.loader {
+	font-size:20px;
+	padding-top: 118px;
+	text-align: center;
+	color:#000;
+	display:none;
+}
+
+.player {
+	display:none;
+}
+
 /*-------gameboy--------*/
 
 .gameboy {
@@ -119,7 +135,7 @@
 	height: 270px;
 	position: relative;
 	margin-left: 83px;
-	background: #9ABB30;
+	background: #FFF;
 }
 
 .screen .sasha{
@@ -150,6 +166,7 @@
 	z-index:2;
 	display:none;
 	overflow:hidden;
+	
 }
 
 .fight .mask{
@@ -165,11 +182,61 @@
 	overflow:hidden;
 }
 
-.fight .life-container {
-	height: 4px;
-	width: 130px;
-	border: solid 1px #000;
+.fight .img {
+	width:115px;
+	height:100px;
+	overflow:hidden;
+	position:absolute;
 }
+
+.fight .img img {
+	width:100%;
+}
+
+.fight .stat {
+	border-left:groove 2px #223300;
+	border-right:groove 5px #223300;
+	border-bottom:groove 5px #223300;
+	border-top:groove 2px #223300;
+	-moz-border-radius: 0px 10px;
+	-webkit-border-radius: 0px 10px 0px 10px;/*This is the correct shorthand for webkit*/
+	border-radius: 0px 10px;
+	/*IE 7 AND 8 DO NOT SUPPORT BORDER RADIUS*/
+	background:#ffffdd;
+	width:120px;
+	padding-bottom:5px;
+	padding-top:5px;
+	margin: 15px 0 0 15px;
+}
+
+.fight .stat .name{
+	text-transform:uppercase;
+	font-weight:bold;
+}
+
+.fight .stat .label-life{
+	float:left;
+	margin-left: 25px;
+	font-size: 7px;
+	font-weight: bold;
+	background: black;
+	color: white;
+}
+
+.fight .life-block {
+	margin:4px 0 4px 0;
+}
+
+.fight .life-container {
+	height:5px;
+	width: 80px;
+	border: solid 1px #000;
+	-moz-border-radius: 47px;
+	-webkit-border-radius: 47px;
+	border-radius: 47px;
+	margin-left:30px;
+}
+
 
 .fight .life-container .life{
 	background-color: #00A9B8;
@@ -194,20 +261,6 @@
 	font-size:10px;
 }
 
-.fight .my-pokemon .life-container {
-	margin-left:70px
-}
-
-.fight .img {
-	width:100px;
-	height:100px;
-	overflow:hidden;
-	position:absolute;
-}
-
-.fight .img img {
-	width:100%;
-}
 
 .fight .my-pokemon .img{
 	float: left;
@@ -219,9 +272,13 @@
 }
 
 .fight .my-pokemon .stat{
-	margin-left: 130px;
-	margin-top:50px;
+	margin-left: 195px;
+	margin-top:25px;
 	text-align: right;
+}
+
+.fight .my-pokemon .stat .overflow{
+	margin-right: 7px;
 }
 
 .fight .rival-pokemon {
@@ -230,39 +287,83 @@
 	font-size:10px;
 }
 
-.fight .rival-pokemon .stat{
-	float:left;
+.fight .rival-pokemon .stat .overflow{
+	margin-left: 7px;
 }
+
 
 .fight .rival-pokemon .img{
 	left:340px;
+	top: 0px;
 	opacity:0;
 }
 
 .fight .command {
-	width:100%;
-	height:70px;
+	height:90px;
 	position:absolute;
 	bottom:0px;
-	background:#ebebeb;
-	width:100%;
+	background:#FFF;
+	width:320px;
 	overflow:hidden;
-	border: solid 1px black;
+	border: groove 5px #8687cb;
 }
 
 .fight .command .talk{
-	width: 195px;
-	height: 78px;
+	width: 180px;
+	height: 90px;
 	float: left;
-	text-transform:uppercase;
-	font-size:14px;
+	text-transform: uppercase;
+	font-size: 12px;
+	overflow: hidden;
+	line-height: 18px;
+}
+
+.fight .command .dialogue {
+	background:#FFF;
+	height:90px;
+	position:absolute;
+	z-index:1000;
+	top:0px;
+	width:100%;
+}
+
+.fight .command .dialogue .content {
+	margin: 7px 0 0 7px;
+	width: 0px;
+	background: #FFF;
+	height: 22px;
+	overflow: hidden;
+	line-height:25px;
+	position:relative;
+}
+
+.fight .command .dialogue .arrow{
+	width:15px;
+	height:15px;
+	background:url(../img/arrrow-dialogue.jpg);
+	position:absolute;
+	bottom:7px;
+	right:7px;
+}
+
+.fight .command .talk .content{
+	margin:7px 0 0 7px;
 }
 
 .fight .command  .action {
-	border: solid 1px black;
 	width: 131px;
-	height: 78px;
+	height: 90px;
 	margin-left: 197px;
+	border-left: groove 5px #8687cb;
+	overflow:hidden;
+}
+
+.fight .command .action .content{
+	margin:7px 0 0 7px;
+}
+
+.fight .command .action .content li{
+	margin-bottom:7px;
 }
 
 .fight .command  .action .item{
@@ -273,6 +374,7 @@
 
 .fight .command .attack .item {
 	cursor:pointer;
+	margin-bottom:7px;
 }
 
 
