@@ -802,8 +802,8 @@ var initPokemon = function() {
 			{name : 'treeTop1', value :  new ItemConstructor(0, 1, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
 				{name : 'treeTop2', value :  new ItemConstructor(0, 5, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
 				{name : 'treeTop3', value :  new ItemConstructor(0, 9, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
-			{name : 'home', value :  new ItemConstructor(0, 2, 3, 3, 'maps/bourg/home2.png', { action : 'conflict', proba : 1})},
-			{name : 'home', value :  new ItemConstructor(0, 6, 3, 3, 'maps/bourg/home2.png', { action : 'conflict', proba : 1})},
+			{name : 'home', value :  new ItemConstructor(0, 2, 3, 3, 'maps/bourg/home.png', { action : 'conflict', proba : 1})},
+			{name : 'home', value :  new ItemConstructor(0, 6, 3, 3, 'maps/bourg/home.png', { action : 'conflict', proba : 1})},
 			{name : 'mailBox', value :  new ItemConstructor(2, 1, 1, 1, 'maps/bourg/mailBox.png', { action : 'conflict', proba : 1})},
 			{name : 'mailBox', value :  new ItemConstructor(2, 9, 1, 1, 'maps/bourg/mailBox.png', { action : 'conflict', proba : 1})},
 			{name : 'labo', value :  new ItemConstructor(4, 5, 3, 4, 'maps/bourg/labo2.png', { action : 'conflict', proba : 1})},
@@ -813,11 +813,12 @@ var initPokemon = function() {
 			{name : 'grassLeft', value :  new ItemConstructor(7, 7, 1, 1, 'maps/bourg/grassLeft.png', { action : 'fight', proba : 3})},
 				{name : 'grassMid', value :  new ItemConstructor(7, 8, 1, 1, 'maps/bourg/grass.png', { action : 'fight', proba : 3})},
 				{name : 'grassRight', value :  new ItemConstructor(7, 9, 1, 1, 'maps/bourg/grassRight.png', { action : 'fight', proba : 3})},
-				
 			{name : 'bar', value :  new ItemConstructor(7, 1, 1, 3, 'maps/bourg/bar.png', { action : 'conflict', proba : 1})},
-			{name : 'waterL', value :  new ItemConstructor(8, 1, 1, 2, 'maps/bourg/waterL.png', { action : 'fight', proba : 3})},
+			/*{name : 'waterL', value :  new ItemConstructor(8, 1, 1, 2, 'maps/bourg/waterL.png', { action : 'fight', proba : 3})},
 			{name : 'waterM', value :  new ItemConstructor(8, 3, 1, 2, 'maps/bourg/waterM.png', { action : 'fight', proba : 3})},
-			{name : 'waterR', value :  new ItemConstructor(8, 5, 1, 2, 'maps/bourg/waterR.png', { action : 'fight', proba : 3})},
+			{name : 'waterR', value :  new ItemConstructor(8, 5, 1, 2, 'maps/bourg/waterR.png', { action : 'fight', proba : 3})},*/
+					{name : 'water', value :  new ItemConstructor(8, 2, 1, 2, 'maps/bourg/water2.png', { action : 'fight', proba : 2})},
+					{name : 'water', value :  new ItemConstructor(8, 7, 1, 2, 'maps/bourg/water2.png', { action : 'fight', proba : 2})},
 					
 			//Création map maison de maman
 			/*{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/maison/floor.png', { action : 'allow'})},
