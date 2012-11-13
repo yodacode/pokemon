@@ -64,5 +64,41 @@
 		"type":"normal",
 		"power":40,
 		"precision":100
+	},
+	"gazToxic":{
+		"name":"Gaz toxic",
+		"type":"poison",
+		"power":0,
+		"precision":80
+	},
+	"puredpois":{
+		"name":"Purédpois",
+		"type":"poison",
+		"power":20,
+		"precision":70
+	},
+	"lechouille":{
+		"name":"Léchouille",
+		"type":"spectr",
+		"power":20,
+		"precision":100
+	},
+	"depit":{
+		"name":"Dépit",
+		"type":"spectr",
+		"power":0,
+		"precision":100
+	},
+	"hypnose":{
+		"name":"Hypnose",
+		"type":"psy",
+		"power":0,
+		"precision":20
+	},
+	"morsure":{
+		"name":"Morsure",
+		"type":"normal",
+		"power":60,
+		"precision":100
 	}
 }

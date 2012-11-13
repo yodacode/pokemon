@@ -38,5 +38,30 @@
 		"img":"rattata.png",
 		"stat":{"defense":40,"attack":45,"level":5,"xp":0,"currentPV":40,"pv":40},
 		"savage":true
+	},
+	"smogo":{
+		"name":"Smogo",
+		"type":"normal",
+		"capacite":["gazToxic","charge","puredpois"],
+		"img":"smogo.png",
+		"stat":{"defense":95,"attack":65,"level":5,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	},
+	"fantominus":{
+		"name":"Fantominus",
+		"type":"psy",
+		"capacite":["lechouille","hypnose","depit"],
+		"img":"fantominus.png",
+		"stat":{"defense":30,"attack":35,"level":7,"xp":0,"currentPV":30,"pv":30},
+		"savage":true
+	},
+	"miaouss":{
+		"name":"Miaouss",
+		"type":"normal",
+		"capacite":["griffe","rugissement","morsure"],
+		"img":"miaouss.png",
+		"stat":{"defense":35,"attack":45,"level":6,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
 	}
+	
 }
