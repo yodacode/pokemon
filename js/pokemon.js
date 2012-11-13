@@ -1224,7 +1224,6 @@ var initPokemon = function() {
 			//Création map maison de maman
 			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/maison/floor.png', { action : 'allow'})},
 			{name : 'enter', value :  new ItemConstructor(1, 0, 2, 1, 'maps/maison/enter.png', { action : 'change', proba : 1, map : 'city'})},
-			//{name : 'enter', value :  new ItemConstructor(2, 6, 1, 1, 'maps/chen/exit.jpg', { action : 'change', proba : 1, map : 'home'})},
 			{name : 'carpetTop', value :  new ItemConstructor(2, 3, 1, 4, 'maps/maison/carpetTop.png', { action : 'allow'})},
 				{name : 'carpetMid', value :  new ItemConstructor(3, 3, 3, 4, 'maps/maison/carpetMid.png', { action : 'allow'})},
 				{name : 'carpetBot', value :  new ItemConstructor(6, 3, 1, 4, 'maps/maison/carpetBot.png', { action : 'allow'})},
