@@ -1,0 +1,42 @@
+{
+	"carapuce": {
+		"name":"carapuce",
+		"type":"eau",
+		"capacite":["charge","ecume","grosYeux"],
+		"img":"carapuce.png",
+		"stat":{"defense":65,"attack":48,"level":5,"xp":0,"currentPV":44,"pv":44},
+		"savage":true
+	},
+	"salameche": {
+		"name":"salameche",
+		"type":"feu",
+		"capacite":["griffe","flammeche","rugissement"],
+		"img":"salameche.png",
+		"stat":{"defense":43,"attack":52,"level":5,"xp":0,"currentPV":39,"pv":39},
+		"savage":true
+	},
+	"bulbizarre": {
+		"name":"bulbizarre",
+		"type":"plante",
+		"capacite":["charge","tranchHerbe","rugissement"],
+		"img":"bulbizarre.png",
+		"stat":{"defense":49,"attack":49,"level":5,"xp":0,"currentPV":45,"pv":45},
+		"savage":true
+	},
+	"roucool":{
+		"name":"roucool",
+		"type":"normal",
+		"capacite":["jetSable","tornade","grosYeux"],
+		"img":"roucool.png",
+		"stat":{"defense":40,"attack":45,"level":5,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	},
+	"rattata":{
+		"name":"Rattata",
+		"type":"normal",
+		"capacite":["charge","mimiQueue","ViveAttaque"],
+		"img":"rattata.png",
+		"stat":{"defense":40,"attack":45,"level":5,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	}
+}

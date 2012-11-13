@@ -1,15 +1,30 @@
+<?php 
+	require_once("api/facebook.php"); 
+	require_once("config/connexion.php");
+	
+	$facebook = new Facebook(array(
+		'appId'  => APP_ID,
+		'secret' => APP_SECRET,
+		'fileUpload' => false
+	));
+
+	$user = $facebook->getUser();
+	if($user){
+		echo "Vous êtes connecté";
+	} else  {
+		echo "Vous n'etes pas connecté";
+	}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 		<script type="text/javascript" src="js/pokemon.js"></script>
+		<script type="text/javascript" src="js/facebook.js"></script>
 		<link type="text/css" rel="stylesheet" href="css/sanitize.css" media="screen"/>
 		<link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
 		<title>Pokemon</title>
-		 <script type="text/javascript">
-					//Init.startInit();
-		</script>
 	</head>
 	<body>
 		
@@ -87,7 +102,7 @@
 				<div class="arrow top btnUp"><span class="direction">up</span></div>
 				<div class="overflow">
 					<div class="arrow left"><span class="direction">left</span></div>
-					<div class="arrow middle"><span class="direction">middle</span></div>
+					<div class="arrow middle"><span class="direction">up</span></div>
 					<div class="arrow right"><span class="direction">right</span></div>
 					<div class="arrow bottom"><span class="direction">down</span></div>
 				</div>

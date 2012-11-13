@@ -5,7 +5,7 @@
 	$id = $_GET['userid'];
 
 	
-	$req = $pkm->prepare('SELECT * FROM users WHERE id= ?');
+	$req = $pkm->prepare('SELECT * FROM pokemons WHERE id= ?');
 	$req->execute(array($id));
 	$data = $req->fetchObject();
 	
