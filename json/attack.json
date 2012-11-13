@@ -1,6 +1,6 @@
 {
 	"flammeche":{
-		"name":"Flammèche",
+		"name":"FlammÃ¨che",
 		"type":"feu",
 		"power":40,
 		"precision":100
@@ -72,19 +72,19 @@
 		"precision":80
 	},
 	"puredpois":{
-		"name":"Purédpois",
+		"name":"PurÃ©dpois",
 		"type":"poison",
 		"power":20,
 		"precision":70
 	},
 	"lechouille":{
-		"name":"Léchouille",
+		"name":"LÃ©chouille",
 		"type":"spectr",
 		"power":20,
 		"precision":100
 	},
 	"depit":{
-		"name":"Dépit",
+		"name":"DÃ©pit",
 		"type":"spectr",
 		"power":0,
 		"precision":100
