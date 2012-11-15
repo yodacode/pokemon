@@ -1,0 +1,67 @@
+{
+	"carapuce": {
+		"name":"carapuce",
+		"type":"eau",
+		"capacite":["charge","ecume","grosYeux"],
+		"img":"carapuce.png",
+		"stat":{"defense":65,"attack":48,"level":5,"xp":0,"currentPV":44,"pv":44},
+		"savage":true
+	},
+	"salameche": {
+		"name":"salameche",
+		"type":"feu",
+		"capacite":["griffe","flammeche","rugissement"],
+		"img":"salameche.png",
+		"stat":{"defense":43,"attack":52,"level":5,"xp":0,"currentPV":39,"pv":39},
+		"savage":true
+	},
+	"bulbizarre": {
+		"name":"bulbizarre",
+		"type":"plante",
+		"capacite":["charge","tranchHerbe","rugissement"],
+		"img":"bulbizarre.png",
+		"stat":{"defense":49,"attack":49,"level":5,"xp":0,"currentPV":45,"pv":45},
+		"savage":true
+	},
+	"roucool":{
+		"name":"roucool",
+		"type":"normal",
+		"capacite":["jetSable","tornade","grosYeux"],
+		"img":"roucool.png",
+		"stat":{"defense":40,"attack":45,"level":5,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	},
+	"rattata":{
+		"name":"Rattata",
+		"type":"normal",
+		"capacite":["charge","mimiQueue","ViveAttaque"],
+		"img":"rattata.png",
+		"stat":{"defense":40,"attack":45,"level":5,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	},
+	"smogo":{
+		"name":"Smogo",
+		"type":"normal",
+		"capacite":["gazToxic","charge","puredpois"],
+		"img":"smogo.png",
+		"stat":{"defense":95,"attack":65,"level":5,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	},
+	"fantominus":{
+		"name":"Fantominus",
+		"type":"psy",
+		"capacite":["lechouille","hypnose","depit"],
+		"img":"fantominus.png",
+		"stat":{"defense":30,"attack":35,"level":7,"xp":0,"currentPV":30,"pv":30},
+		"savage":true
+	},
+	"miaouss":{
+		"name":"Miaouss",
+		"type":"normal",
+		"capacite":["griffe","rugissement","morsure"],
+		"img":"miaouss.png",
+		"stat":{"defense":35,"attack":45,"level":6,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	}
+	
+}

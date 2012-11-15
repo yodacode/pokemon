@@ -535,14 +535,13 @@ var initPokemon = function() {
 	FightConstructor.prototype.doAction = function (action, pokemon) {
 		var self = this;
 		if(action == 'attack'){
-				this.attackBlock.hide();
-				this.doBlock.hide();
-				this.attackBlock.show();
-				this.attackBlock.find('.item').click(function(){
-					var codeAttack = $(this).find('.code').text();
-					Attack.launchAttack(codeAttack,self.jeton);
-				});
-
+			this.attackBlock.hide();
+			this.doBlock.hide();
+			this.attackBlock.show();
+			this.attackBlock.find('.item').click(function(){
+				var codeAttack = $(this).find('.code').text();
+				Attack.launchAttack(codeAttack,self.jeton);
+			});
 		}
 	};
 	
@@ -847,85 +846,7 @@ var initPokemon = function() {
 	 * return obj attack
 	 */
 	AttackConstructor.prototype.getAttack = function (name) {
-		var listAttack = {
-				flammeche : 
-					{
-						name : 'Flammèche',
-						type : 'feu',
-						power : 40,
-						precision : 100
-					},
-				rugissement : 
-					{
-						name : 'Rugissement',
-						type : 'normal',
-						power : 0,
-						precision : 100
-					},
-				grosYeux : 
-					{
-						name : 'Gros yeux',
-						type : 'normal',
-						power : 0,
-						precision : 100
-					},
-				griffe : 
-					{
-						name : 'griffe',
-						type : 'normal',
-						power : 40,
-						precision : 100
-					},
-				charge : 
-					{
-						name : 'Charge',
-						type : 'normal',
-						power : 50,
-						precision : 100
-					},
-				mimiQueue : 
-					{
-						name : 'Mimi queue',
-						type : 'normal',
-						power : 0,
-						precision : 100
-					},
-				ecume : 
-					{
-						name : 'Ecume',
-						type : 'eau',
-						power : 20,
-						precision : 100
-					},
-				tranchHerbe : 
-					{
-						name : 'Tranch\'Herbe',
-						type : 'plante',
-						power : 55,
-						precision : 95
-					},
-				jetSable : 
-					{
-						name : 'Jet de sable',
-						type : 'sol',
-						power : 0,
-						precision : 100
-					},
-				tornade : 
-					{
-						name : 'Jet de sable',
-						type : 'vol',
-						power : 40,
-						precision : 100
-					},
-				ViveAttaque : 
-					{
-						name : 'Vive attaque',
-						type : 'normal',
-						power : 40,
-						precision : 100
-					}
-		};
+		var listAttack = ATTACK;
 		if(name){
 			return listAttack[name];
 		} else {
@@ -951,7 +872,7 @@ var initPokemon = function() {
 		this.xp = stat.xp;
 		this.pv = stat.pv;
 		this.currentPV = stat.currentPV;
-	}
+	};
 	
 	/**
 	 * method : randomPokemon()
@@ -987,7 +908,7 @@ var initPokemon = function() {
 			}
 		);
 		return rivalPokemon;
-	}
+	};
 	
 	/**
 	 * method : getPokemon(string name)
@@ -995,59 +916,12 @@ var initPokemon = function() {
 	 * return : obj pokemon
 	 */
 	PokemonConstructor.prototype.getPokemon = function Pokemon(name) {
-		var listPokemon = {
-			carapuce : 
-				{
-					name : 'carapuce',
-					type : 'eau',
-					capacite : ['charge','ecume','grosYeux'],
-					img : 'carapuce.png',
-					stat : {defense:65, attack:48, level:5, xp:0, currentPV:44, pv:44},
-					savage : true
-				},
-			salameche : 
-				{
-					name : 'salameche',
-					type : 'feu',
-					capacite : ['griffe','flammeche','rugissement'],
-					img : 'salameche.png',
-					stat : {defense:43, attack:52, level:5, xp:0, currentPV:39, pv:39},
-					savage : true
-				},
-			bulbizarre : 
-				{
-					name : 'bulbizarre',
-					type : 'plante',
-					capacite : ['charge','tranchHerbe','rugissement'],
-					img : 'bulbizarre.png',
-					stat : {defense:49, attack:49, level:5, xp:0, currentPV:45, pv:45},
-					savage : true
-				},
-			roucool : 
-				{
-					name : 'roucool',
-					type : 'normal',
-					capacite : ['jetSable','tornade','grosYeux'],
-					img : 'roucool.png',
-					stat : {defense:40, attack:45, level:5, xp:0, currentPV:40, pv:40},
-					savage : true
-				},
-			rattata : 
-				{
-					name : 'Rattata',
-					type : 'normal',
-					capacite : ['charge','mimiQueue','ViveAttaque'],
-					img : 'rattata.png',
-					stat : {defense:40, attack:45, level:5, xp:0, currentPV:40, pv:40},
-					savage : true
-				},
-		};
+		var listPokemon = PKM;
 		if(name){
 			return listPokemon[name];
 		} else {
 			return listPokemon;
 		}
-	
 	}
 	
 	
@@ -1130,36 +1004,76 @@ var initPokemon = function() {
 	var InitConstructor = function Init() {
 		
 		Screen = new ScreenConstructor($('.screen'));
-		
 		Sprite = new SpriteConstructor();
-		
 		Control = new ControlConstructor();
-		
 		Map = new MapConstructor(Screen.width/Screen.cellWidth, Screen.height/Screen.cellHeight);
-		
 		Dialogue = new DialogueConstructor();	
-		
 		Fight = new FightConstructor();
-		
 		Attack = new AttackConstructor();
 		
-		Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'plante', 'bulbizarre.png', {defense:49, attack:49, level:60, xp:0, currentPV:45, pv:45});
-		
-		Sasha = new SashaConstructor($('.sasha'), 'down', {top : 6, left : 5});
-		
+		Sasha = new SashaConstructor($('.sasha'), 'down', {top : 6, left : 5});		
 		SoundCity = new SoundConstructor('pallet-town');
 		SoundFight = new SoundConstructor('fight-sound');
-
 		SoundCity.soundPlay();
 		
 		$('.pause').click(function(){SoundCity.soundPause()});
 		$('.play').click(function(){SoundCity.soundPlay()});
 		
+		this.loadMyPokemon();
 		
 		this.getRender();
-		var self = this;	
-	}
+		var self = this;
+
+		$.getJSON('json/pkm.json', function(listPkm) {
+			console.log(listPkm);
+			PKM = listPkm; 
+		});
+		$.getJSON('json/attack.json', function(listAttack) {
+			ATTACK = listAttack; 
+		});
+		
+	};
 	
+	//Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'plante', 'bulbizarre.png', {defense:49, attack:49, level:60, xp:0, currentPV:45, pv:45});
+	
+	/**
+	 * method : loadMyPokemon()
+	 * @Docs : permet d'instancier mon pokemon 
+	 */
+	InitConstructor.prototype.loadMyPokemon = function () {
+		$('.loader').fadeIn();
+		$.ajax({
+			type : 'GET',
+			url : 'request/load-pokemon.php?userid='+1,
+			dataType :'json',
+			success : function (e) {
+				console.log(e);
+				Pokemon = new PokemonConstructor(
+					e.nom, 
+					[
+						e.attack1,
+						e.attack2,
+						e.attack3
+					], 
+					e.type, 
+					e.img, 
+					{
+						defense:e.defense,
+						attack:e.attack,
+						level:e.level,
+						xp:e.xp,
+						currentPV:e.currentpv,
+						pv:e.pv
+					}
+				);
+				$('.loader').fadeOut(900);
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
+
+	};
 	
 	/**
 	 * method : updateRender(string map)
@@ -1274,8 +1188,8 @@ var initPokemon = function() {
 			{name : 'treeTop1', value :  new ItemConstructor(0, 1, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
 				{name : 'treeTop2', value :  new ItemConstructor(0, 5, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
 				{name : 'treeTop3', value :  new ItemConstructor(0, 9, 1, 1, 'maps/bourg/treeBot.png', { action : 'conflict', proba : 1})},
-			{name : 'home', value :  new ItemConstructor(0, 2, 3, 3, 'maps/bourg/home.png', { action : 'conflict', proba : 1})},
-			{name : 'home', value :  new ItemConstructor(0, 6, 3, 3, 'maps/bourg/home.png', { action : 'conflict', proba : 1})},
+			{name : 'home', value :  new ItemConstructor(0, 2, 3, 3, 'maps/bourg/home2.png', { action : 'conflict', proba : 1})},
+			{name : 'home', value :  new ItemConstructor(0, 6, 3, 3, 'maps/bourg/home2.png', { action : 'conflict', proba : 1})},
 			{name : 'mailBox', value :  new ItemConstructor(2, 1, 1, 1, 'maps/bourg/mailBox.png', { action : 'conflict', proba : 1})},
 			{name : 'mailBox', value :  new ItemConstructor(2, 9, 1, 1, 'maps/bourg/mailBox.png', { action : 'conflict', proba : 1})},
 			{name : 'labo', value :  new ItemConstructor(4, 5, 3, 4, 'maps/bourg/labo2.png', { action : 'conflict', proba : 1})},
@@ -1310,7 +1224,6 @@ var initPokemon = function() {
 			//Création map maison de maman
 			{name : 'floor', value :  new ItemConstructor(0, 0, 9, 11, 'maps/maison/floor.png', { action : 'allow'})},
 			{name : 'enter', value :  new ItemConstructor(1, 0, 2, 1, 'maps/maison/enter.png', { action : 'change', proba : 1, map : 'city'})},
-			//{name : 'enter', value :  new ItemConstructor(2, 6, 1, 1, 'maps/chen/exit.jpg', { action : 'change', proba : 1, map : 'home'})},
 			{name : 'carpetTop', value :  new ItemConstructor(2, 3, 1, 4, 'maps/maison/carpetTop.png', { action : 'allow'})},
 				{name : 'carpetMid', value :  new ItemConstructor(3, 3, 3, 4, 'maps/maison/carpetMid.png', { action : 'allow'})},
 				{name : 'carpetBot', value :  new ItemConstructor(6, 3, 1, 4, 'maps/maison/carpetBot.png', { action : 'allow'})},
@@ -1345,9 +1258,19 @@ var initPokemon = function() {
 			
 			
 					
-			
+	//xperience require	
+	var xp = function(e) {
+		var result = (1,2*(e*3)) - (15*(e*2)) + (100*e) - 140;
+		return result;
+	}
 	
+	//xp win 
+	var winXp = function(myLevel,rivalLevel) { 
+		var result = (rivalLevel * myLevel / 7);
+		return result;
+	}
 	
+
 
 	
 	
