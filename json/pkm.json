@@ -90,7 +90,7 @@
 	"Ferosinge":{
 		"name":"ferosinge",
 		"type":"normal",
-		"capacite":["Griffe","Balayage","Groz'Yeux"],
+		"capacite":["Griffe","Balayage","grosYeux"],
 		"img":"ferosinge.png",
 		"stat":{"defense":35,"attack":80,"level":6,"xp":0,"currentPV":40,"pv":40},
 		"savage":true
@@ -98,7 +98,7 @@
 	"Canartichaud":{
 		"name":"canartichaud",
 		"type":"normal",
-		"capacite":["Picpic","Jet de Sable","Groz'Yeux"],
+		"capacite":["Picpic","Jet de Sable","grosYeux"],
 		"img":"canartichaud.png",
 		"stat":{"defense":55,"attack":65,"level":6,"xp":0,"currentPV":50,"pv":50},
 		"savage":true
