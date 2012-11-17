@@ -148,5 +148,18 @@
 		"type":"normal",
 		"power":30,
 		"precision":100
+	},
+	"Sécrétion":{
+		"name":"Sécrétion",
+		"type":"normal",
+		"power":0,
+		"precision":100
+	},
+	"Piqûre":{
+		"name":"Piqûre",
+		"type":"normal",
+		"power":40,
+		"precision":100
 	}
+
 }
