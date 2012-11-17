@@ -62,6 +62,54 @@
 		"img":"miaouss.png",
 		"stat":{"defense":35,"attack":45,"level":6,"xp":0,"currentPV":40,"pv":40},
 		"savage":true
+	},
+	"Chenipan":{
+		"name":"Chenipan",
+		"type":"normal",
+		"capacite":["charge","Sécrétion","Piqûre"],
+		"img":"chenipan.png",
+		"stat":{"defense":35,"attack":30,"level":5,"xp":0,"currentPV":45,"pv":45},
+		"savage":true
+	},
+	"Abra":{
+		"name":"Abra",
+		"type":"psy",
+		"capacite":["Teleport","",""],
+		"img":"abra.png",
+		"stat":{"defense":15,"attack":20,"level":6,"xp":0,"currentPV":25,"pv":25},
+		"savage":true
+	},
+	"Tadmorv":{
+		"name":"tadmorv",
+		"type":"Dégueu",
+		"capacite":["Gaz Toxik","Armure","Écras'Face"],
+		"img":"tadmorv.png",
+		"stat":{"defense":50,"attack":80,"level":8,"xp":0,"currentPV":80,"pv":80},
+		"savage":true
+	},
+	"Ferosinge":{
+		"name":"ferosinge",
+		"type":"normal",
+		"capacite":["Griffe","Balayage","Groz'Yeux"],
+		"img":"ferosinge.png",
+		"stat":{"defense":35,"attack":80,"level":6,"xp":0,"currentPV":40,"pv":40},
+		"savage":true
+	},
+	"Canartichaud":{
+		"name":"canartichaud",
+		"type":"normal",
+		"capacite":["Picpic","Jet de Sable","Groz'Yeux"],
+		"img":"canartichaud.png",
+		"stat":{"defense":55,"attack":65,"level":6,"xp":0,"currentPV":50,"pv":50},
+		"savage":true
+	},
+	"Chetiflor":{
+		"name":"chetiflor",
+		"type":"Plante",
+		"capacite":["Fouet Lianes","Croissance","Ligotage"],
+		"img":"chetiflor.png",
+		"stat":{"defense":35,"attack":75,"level":7,"xp":0,"currentPV":50,"pv":50},
+		"savage":true
 	}
 	
 }
