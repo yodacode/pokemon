@@ -600,15 +600,41 @@ var initPokemon = function() {
 		this.panel.find('.rival-pokemon .img').css({left : 340, top : 0 ,opacity : 0});
 		this.panel.find('.rival-pokemon .life').css({width:100+'%'});
 		this.panel.find('.my-pokemon .img').css({left : -130, top : 65 ,opacity : 0});
+	};
+	
+	
+	/**
+	 * method : increaseXp()
+	 * @Docs : update l'xp du pokemon à la fin du combat
+	 */
+	FightConstructor.prototype.increaseXp = function () {
+		console.log(this.myPokemon,this.rivalPokemon);
+		this.xpWin = null; 
+		this.xpWin = (this.rivalPokemon.level * this.myPokemon.level / 7);
+		var self = this;
+		console.log('xp win '+this.xpWin+' current xp '+this.myPokemon.xp);
+		var newXp = parseInt(this.xpWin) + parseInt(this.myPokemon.xp);
+		console.log('new xp '+newXp);
+		$('.loader').fadeIn();
+		$.ajax({
+			type : 'GET',
+			url : 'request/update-xp.php?userid='+1+'&xp='+newXp,
+			dataType :'json',
+			success : function (e) {
+				$('.loader').fadeOut(900);
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
 	}
-	
-	
 	
 	/**
 	 * method : stopFight()
 	 * @Docs : Permet de stoper la fight pour revenir à l'ecran map
 	 */
 	FightConstructor.prototype.stopFight = function () {
+		this.increaseXp();
 		var self = this;
 		if(this.winner == 0) {
 			Dialogue.startDialogue(['Trooop cool vous avez gagné','Le pokemon va gagner un max de xp'],function(){
@@ -623,7 +649,6 @@ var initPokemon = function() {
 		} else if(this.winner == 1) {
 			Dialogue.startDialogue(['Oooooooooooh non on a perdu']);					
 		}
-	
 		
 	};
 
@@ -1025,7 +1050,6 @@ var initPokemon = function() {
 		var self = this;
 
 		$.getJSON('json/pkm.json', function(listPkm) {
-			console.log(listPkm);
 			PKM = listPkm; 
 		});
 		$.getJSON('json/attack.json', function(listAttack) {
@@ -1047,7 +1071,6 @@ var initPokemon = function() {
 			url : 'request/load-pokemon.php?userid='+1,
 			dataType :'json',
 			success : function (e) {
-				console.log(e);
 				Pokemon = new PokemonConstructor(
 					e.nom, 
 					[
