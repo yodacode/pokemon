@@ -28,13 +28,13 @@
 		<title>Pokemon</title>
 	</head>
 	<body>
-		
 		<div class="pause">pause</div>
 		<div class="play">play</div>
 		<div class="overflow" style="width:1px;height:1px">&nbsp;<?php include('preload-img.php');?></div>
 		<div class="gameboy">
+		<div class="loader">Chargement...</div>
 			<div class="screen">
-			<div class="loader">Chargement...</div>
+			
 				<div class="fight">
 					<div class="panel">
 						<div class="rival-pokemon">
@@ -72,7 +72,10 @@
 										<span class="currentPV"></span>
 										<span class="pv"><span class="label"> / </span></span>
 									</div>
-									<div class="xp"><span class="label">xp : </span></div>
+									<div class="overflow xp-block">
+										<div class="xp-container"><div class="xp-bar"></div></div>
+									</div>
+									<!--<div class="xp"><span class="label">xp : </span></div>-->
 								</div>
 							</div>
 						</div>

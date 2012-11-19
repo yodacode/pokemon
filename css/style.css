@@ -17,11 +17,23 @@
 }
 
 .loader {
-	font-size:20px;
-	padding-top: 118px;
+	font-size: 20px;
+	color: black;
+	position: absolute;
+	top: 201px;
+	left: 181px;
+	z-index: 90000;
+	background: white;
 	text-align: center;
-	color:#000;
-	display:none;
+	height: 27px;
+	min-width: 150px;
+	line-height: 24px;
+	border:solid 1px #ebebeb;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	/*IE 7 AND 8 DO NOT SUPPORT BORDER RADIUS*/
+	opacity:0.5;
 }
 
 .player {
@@ -35,6 +47,7 @@
 	width:500px;
 	height:655px;
 	padding-top:85px;
+	position:relative;
 }
 
 .gameboy  .joystick {
@@ -380,6 +393,27 @@
 
 .fight .command .do .item .code {
 	display:none;
+}
+
+.fight .my-pokemon .xp-container {
+	height:4px;
+	border-bottom:solid 1px #000;
+	border-left:solid 1px #000;
+	margin-left: 18px;
+	margin-top: 4px;
+	width: 93px;
+}
+
+.fight .my-pokemon .xp-container .xp-bar{
+	width:0%;
+	height:4px;
+	background:#67b943;
+}
+
+.xp, .xp .label {
+	font-size:9px;
+	margin-right:8px;
+	margin-top:2px
 }
 
 

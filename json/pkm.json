@@ -90,7 +90,7 @@
 	"ferosinge":{
 		"name":"ferosinge",
 		"type":"normal",
-		"capacite":["Griffe","Balayage","grosYeux"],
+		"capacite":["griffe","balayage","grosYeux"],
 		"img":"ferosinge.png",
 		"stat":{"defense":35,"attack":80,"level":6,"xp":0,"currentPV":40,"pv":40},
 		"savage":true

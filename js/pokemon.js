@@ -112,7 +112,7 @@ var initPokemon = function() {
 		this.timerMove = null;
 		var self = this;
 		this.timerMove = window.setInterval(function(){
-			self.moving(direction)
+			self.moving(direction);
 		},100);
 
 	};
@@ -475,7 +475,7 @@ var initPokemon = function() {
 		this.myPokemon = pokemon[0];
 		this.rivalPokemon = pokemon[1];
 		var self = this;
-		
+		Fight.updateRenderXp(self.myPokemon.xp,self.myPokemon.levelup	);
 		$('.screen .fight .panel').fadeIn(200, function(){
 			$('.my-pokemon .img').animate({
 				left : 0,
@@ -570,7 +570,11 @@ var initPokemon = function() {
 				$pokemonTeam.find('.img').animate({
 					top : 900
 				},function(){
-					Fight.stopFight();	
+					if(self.winner == 0) {
+						Fight.increaseXp();
+					} else {
+						Fight.stopFight();
+					}
 				});
 			});	
 		} else {
@@ -608,13 +612,14 @@ var initPokemon = function() {
 	 * @Docs : update l'xp du pokemon à la fin du combat
 	 */
 	FightConstructor.prototype.increaseXp = function () {
-		console.log(this.myPokemon,this.rivalPokemon);
+		console.log('increase xp in db');
 		this.xpWin = null; 
 		this.xpWin = (this.rivalPokemon.level * this.myPokemon.level / 7);
+		console.log('XP WIIN'+this.xpWin);
 		var self = this;
-		console.log('xp win '+this.xpWin+' current xp '+this.myPokemon.xp);
+
 		var newXp = parseInt(this.xpWin) + parseInt(this.myPokemon.xp);
-		console.log('new xp '+newXp);
+		$('.loader').text('Increase xp in db...');
 		$('.loader').fadeIn();
 		$.ajax({
 			type : 'GET',
@@ -622,6 +627,70 @@ var initPokemon = function() {
 			dataType :'json',
 			success : function (e) {
 				$('.loader').fadeOut(900);
+				Dialogue.startDialogue(['Ouh yeah bébé on a gagné !!!!','Le pokemon gagne de l\'xp'],function(){
+					self.updateRenderXp(newXp,self.myPokemon.levelup);
+				});
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
+	};
+	
+	
+	/**
+	 * method : updateRenderXp(int myPokemonXp, int xpRequire)
+	 * @Docs : update la barre de progression d'xp et init le pokemon avec les nouveaux params gagné pendant la fight
+	 */
+	FightConstructor.prototype.updateRenderXp = function (myPokemonXp,xpRequire) {
+		console.log('update render xp');
+		var progression = (myPokemonXp/xpRequire)*100;
+		if(progression >= 100){
+			this.levelUp(this.myPokemon.level,xpRequire,myPokemonXp);
+		} else {
+			$('.xp-block .xp-bar').animate({
+				width : progression+'%'
+			},1000);
+			Fight.stopFight();
+		}
+		Init.loadMyPokemon();
+	};
+	
+	/**
+	 * method : levelUp(int levelPokemon, int levelUp)
+	 * @Docs : level up  le pokemon et update la table xp et levelup
+	 */
+	FightConstructor.prototype.levelUp = function (levelPokemon,levelUp) {
+		console.log('level up');
+		var self = this;
+		var newLevel = (parseInt(levelPokemon))+1;
+		var newLevelUp = this.xpRequire(newLevel);
+		$('.loader').text('Update level db...');
+		$('.loader').fadeIn();
+		$.ajax({
+			type : 'GET',
+			url : 'request/update-level.php?userid='+1+'&level='+newLevel+'&levelup='+newLevelUp,
+			success : function (e) {
+				$('.loader').fadeOut(900);
+				$('.my-pokemon .level .value').text(newLevel);
+				Init.loadMyPokemon();
+				
+				$('.xp-block .xp-bar').animate({
+					width :'100%'
+					},100,function(){
+						$('.xp-block .xp-bar').css({width:'0%'});
+						Dialogue.startDialogue(['Ton pokemon augmente de niveau','son attaque sera encore plus puissante !'],function(){
+							$('.my-pokemon .level .value:last').text(newLevel);
+							Fight.stopFight();
+						});
+						
+					});
+					//Fight.stopFight();
+				
+				
+				
+
+				
 			},
 			error : function () {
 				console.log(arguments);
@@ -630,14 +699,24 @@ var initPokemon = function() {
 	}
 	
 	/**
+	 * method : xpRequire()
+	 * @Docs : xp requis pour level up
+	 * return result
+	 */
+	FightConstructor.prototype.xpRequire = function (levelPokemon) {
+		var result = (1,2*(levelPokemon*3)) - (15*(levelPokemon*2)) + (100*levelPokemon) - 140;
+		console.log(result);
+		return result;
+	}
+	
+	/**
 	 * method : stopFight()
 	 * @Docs : Permet de stoper la fight pour revenir à l'ecran map
 	 */
 	FightConstructor.prototype.stopFight = function () {
-		this.increaseXp();
 		var self = this;
 		if(this.winner == 0) {
-			Dialogue.startDialogue(['Trooop cool vous avez gagné','Le pokemon va gagner un max de xp'],function(){
+			Dialogue.startDialogue(['Héhé !'],function(){
 				Sasha.sashaDiv.show();
 				self.panel.hide();
 				self.clearFight();
@@ -645,7 +724,7 @@ var initPokemon = function() {
 			
 				SoundCity = new SoundConstructor('pallet-town');
 				SoundCity.soundPlay();
-		});					
+			});					
 		} else if(this.winner == 1) {
 			Dialogue.startDialogue(['Oooooooooooh non on a perdu']);					
 		}
@@ -703,7 +782,7 @@ var initPokemon = function() {
 	
 	
 	/**
-	 * method : startDialog(array listDialog 
+	 * method : animation() 
 	 * @Docs : prend une liste de dialogues et les affiche à la chaine dans le bloc 
 	 */
 	DialogueConstructor.prototype.animation = function (){
@@ -895,6 +974,7 @@ var initPokemon = function() {
 		this.attack = stat.attack;
 		this.level = stat.level;
 		this.xp = stat.xp;
+		this.levelup = stat.levelup;
 		this.pv = stat.pv;
 		this.currentPV = stat.currentPV;
 	};
@@ -1065,6 +1145,7 @@ var initPokemon = function() {
 	 * @Docs : permet d'instancier mon pokemon 
 	 */
 	InitConstructor.prototype.loadMyPokemon = function () {
+		$('.loader').text('Reload pokemon...');
 		$('.loader').fadeIn();
 		$.ajax({
 			type : 'GET',
@@ -1085,6 +1166,7 @@ var initPokemon = function() {
 						attack:e.attack,
 						level:e.level,
 						xp:e.xp,
+						levelup:e.levelup,
 						currentPV:e.currentpv,
 						pv:e.pv
 					}
@@ -1105,6 +1187,7 @@ var initPokemon = function() {
 	InitConstructor.prototype.updateRender = function (render) {
 		this.map = null;
 		var self = this;
+		$('.loader').text('Update render...');
 		$('.loader').fadeIn();
 		switch (render){
 		case 'city' : 
@@ -1136,6 +1219,7 @@ var initPokemon = function() {
 	 * @Docs : permet d'obtenir le render au chargment de la page
 	 */
 	InitConstructor.prototype.getRender = function () {
+		$('.loader').text('Get render...');
 		$('.loader').fadeIn();
 		$('.sasha').hide();
 		$.ajax({
