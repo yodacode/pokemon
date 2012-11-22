@@ -21,7 +21,7 @@
 	color: black;
 	position: absolute;
 	top: 201px;
-	left: 181px;
+	left: 165px;
 	z-index: 90000;
 	background: white;
 	text-align: center;
@@ -40,6 +40,10 @@
 	display:none;
 }
 
+.container {
+	
+}
+
 /*-------gameboy--------*/
 
 .gameboy {
@@ -48,6 +52,7 @@
 	height:655px;
 	padding-top:85px;
 	position:relative;
+	margin: 0 auto;
 }
 
 .gameboy  .joystick {

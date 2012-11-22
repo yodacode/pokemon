@@ -11,9 +11,21 @@
 
 	$user = $facebook->getUser();
 	if($user){
-		echo "Vous êtes connecté";
+		$user_profile = $facebook->api('/me');
+		$req = $pkm->prepare('SELECT * FROM users WHERE fb_id= ?');
+		$req->execute(array($user_profile['id']));
+		
+		if(count($req->fetchAll()) == 0) {
+			$req = $pkm->prepare('INSERT into users (fb_id, nom, prenom, login, direction, positiony, positionx, map) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+			$req->execute(array($user_profile['id'],$user_profile['last_name'],$user_profile['first_name'],$user_profile['email'],'up',6,5,'chen'));
+		}
+		
+		echo '<pre>';
+			//print_r($user_profile);
+		echo '</pre>';
+		
 	} else  {
-		echo "Vous n'etes pas connecté";
+		echo "Vous n'etes pas connecté à l'application";
 	}
 ?>
 <!DOCTYPE html>
@@ -28,11 +40,23 @@
 		<title>Pokemon</title>
 	</head>
 	<body>
+		<div id="fb-root"></div>
+		<script>			
+			//Load the SDK Asynchronously
+			(function(d){
+				 var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+				 if (d.getElementById(id)) {return;}
+				 js = d.createElement('script'); js.id = id; js.async = true;
+				 js.src = "//connect.facebook.net/en_US/all.js";
+				 ref.parentNode.insertBefore(js, ref);
+			}(document)); 
+		</script>
+	<div class="container">
 		<div class="pause">pause</div>
 		<div class="play">play</div>
 		<div class="overflow" style="width:1px;height:1px">&nbsp;<?php include('preload-img.php');?></div>
 		<div class="gameboy">
-		<div class="loader">Chargement...</div>
+		<div class="loader">...</div>
 			<div class="screen">
 			
 				<div class="fight">
@@ -122,6 +146,6 @@
 				<div class="button start"></div>
 			</div>
 		</div>
-	
+	</div>
 	</body>
 </html>

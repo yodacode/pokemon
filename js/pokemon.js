@@ -614,7 +614,7 @@ var initPokemon = function() {
 	FightConstructor.prototype.increaseXp = function () {
 		console.log('increase xp in db');
 		this.xpWin = null; 
-		this.xpWin = (this.rivalPokemon.level * this.myPokemon.level / 7);
+		this.xpWin = (this.rivalPokemon.level * this.myPokemon.level / 7)*50;
 		console.log('XP WIIN'+this.xpWin);
 		var self = this;
 
@@ -623,7 +623,7 @@ var initPokemon = function() {
 		$('.loader').fadeIn();
 		$.ajax({
 			type : 'GET',
-			url : 'request/update-xp.php?userid='+1+'&xp='+newXp,
+			url : 'request/update-xp.php?userid='+USERID+'&xp='+newXp,
 			dataType :'json',
 			success : function (e) {
 				$('.loader').fadeOut(900);
@@ -669,7 +669,7 @@ var initPokemon = function() {
 		$('.loader').fadeIn();
 		$.ajax({
 			type : 'GET',
-			url : 'request/update-level.php?userid='+1+'&level='+newLevel+'&levelup='+newLevelUp,
+			url : 'request/update-level.php?userid='+USERID+'&level='+newLevel+'&levelup='+newLevelUp,
 			success : function (e) {
 				$('.loader').fadeOut(900);
 				$('.my-pokemon .level .value').text(newLevel);
@@ -1107,7 +1107,7 @@ var initPokemon = function() {
 	 * return : 
 	 */
 	var InitConstructor = function Init() {
-		
+		var self = this;
 		Screen = new ScreenConstructor($('.screen'));
 		Sprite = new SpriteConstructor();
 		Control = new ControlConstructor();
@@ -1124,10 +1124,12 @@ var initPokemon = function() {
 		$('.pause').click(function(){SoundCity.soundPause()});
 		$('.play').click(function(){SoundCity.soundPlay()});
 		
-		this.loadMyPokemon();
 		
+	
+		
+		this.loadMyPokemon();
 		this.getRender();
-		var self = this;
+		
 
 		$.getJSON('json/pkm.json', function(listPkm) {
 			PKM = listPkm; 
@@ -1135,6 +1137,8 @@ var initPokemon = function() {
 		$.getJSON('json/attack.json', function(listAttack) {
 			ATTACK = listAttack; 
 		});
+		
+		
 		
 	};
 	
@@ -1145,11 +1149,12 @@ var initPokemon = function() {
 	 * @Docs : permet d'instancier mon pokemon 
 	 */
 	InitConstructor.prototype.loadMyPokemon = function () {
+		var self = this;
 		$('.loader').text('Reload pokemon...');
 		$('.loader').fadeIn();
 		$.ajax({
 			type : 'GET',
-			url : 'request/load-pokemon.php?userid='+1,
+			url : 'request/load-pokemon.php?userid='+USERID,
 			dataType :'json',
 			success : function (e) {
 				Pokemon = new PokemonConstructor(
@@ -1202,7 +1207,7 @@ var initPokemon = function() {
 		}
 		$.ajax({
 			type : 'GET',
-			url : 'request/update-map.php?userid='+1+'&map='+render,
+			url : 'request/update-map.php?userid='+USERID+'&map='+render,
 			dataType :'json',
 			success : function (e) {
 				$('.loader').fadeOut(900);
@@ -1219,12 +1224,13 @@ var initPokemon = function() {
 	 * @Docs : permet d'obtenir le render au chargment de la page
 	 */
 	InitConstructor.prototype.getRender = function () {
+		console.log(USERID);
 		$('.loader').text('Get render...');
 		$('.loader').fadeIn();
 		$('.sasha').hide();
 		$.ajax({
 			type : 'GET',
-			url : 'request/init-render.php?userid='+1,
+			url : 'request/init-render.php?userid='+USERID,
 			dataType :'json',
 			success : function (e) {
 				switch (e.map){
@@ -1359,23 +1365,52 @@ var initPokemon = function() {
 	
 
 	
-	Init = new InitConstructor();
 	
 	
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	
+window.fbAsyncInit = function() {
+	console.log('INIT');
+	FB.init({
+		appId      : 355558234538834, // App ID
+		channelUrl : '//127.0.0.1:8888/RPG/channel.html', // Channel File
+		status     : true, // check login status
+		cookie     : true, // enable cookies to allow the server to access the session
+		xfbml      : true  // parse XFBML
+	});
+
+	// ADDITIONNAL CODE HERE
+	
+	//verifie le status de l'utilisateur
+	FB.getLoginStatus(function(response){
+		if(response.status != 'connected'){
+			//se connecter à facebook
+			FB.login(function(response){
+				if(response.authResponse){
+					window.location.reload();
+				}
+			}, {scope : 'email,user_likes'});
+		} else {	
+		
 			
+			FB.api('/me', function(response) {
+				USERID = response.id;
+				Init = new InitConstructor();
+			});
 			
-					
-	//xperience require	
-	var xp = function(e) {
-		var result = (1,2*(e*3)) - (15*(e*2)) + (100*e) - 140;
-		return result;
-	}
+		}
+		
+	});				
+										
+};
 	
-	//xp win 
-	var winXp = function(myLevel,rivalLevel) { 
-		var result = (rivalLevel * myLevel / 7);
-		return result;
-	}
+	
 	
 
 
