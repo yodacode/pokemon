@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le: Lun 12 Novembre 2012 à 12:18
+-- Généré le: Jeu 22 Novembre 2012 à 10:29
 -- Version du serveur: 5.5.27-log
 -- Version de PHP: 5.4.6
 
@@ -27,28 +27,30 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `pokemons` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
   `xp` int(11) NOT NULL,
+  `levelup` int(11) NOT NULL,
+  `pv` int(11) NOT NULL,
   `currentpv` int(11) NOT NULL,
   `attack1` varchar(255) NOT NULL,
   `attack2` varchar(255) NOT NULL,
   `attack3` varchar(255) NOT NULL,
   `defense` int(11) NOT NULL,
+  `attack` int(11) NOT NULL,
   `id_attack` int(11) NOT NULL,
   `id_stat` int(11) NOT NULL,
   `level` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  `id_users` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `pokemons`
 --
 
-INSERT INTO `pokemons` (`id`, `nom`, `type`, `img`, `xp`, `currentpv`, `attack1`, `attack2`, `attack3`, `defense`, `id_attack`, `id_stat`, `level`) VALUES
-(1, 'bulbizarre', 'plante', 'bulbizarre.png', 0, 45, '49', '', '', 49, 1, 1, 60);
+INSERT INTO `pokemons` (`nom`, `type`, `img`, `xp`, `levelup`, `pv`, `currentpv`, `attack1`, `attack2`, `attack3`, `defense`, `attack`, `id_attack`, `id_stat`, `level`, `id_users`) VALUES
+('bulbizarre', 'plante', 'bulbizarre.png', 250, 392, 45, 45, 'charge', 'tranchHerbe', 'rugissement', 49, 49, 1, 1, 7, 678475131);
 
 -- --------------------------------------------------------
 
@@ -58,6 +60,7 @@ INSERT INTO `pokemons` (`id`, `nom`, `type`, `img`, `xp`, `currentpv`, `attack1`
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fb_id` int(11) NOT NULL,
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
   `login` varchar(255) NOT NULL,
@@ -66,16 +69,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `positiony` int(11) NOT NULL,
   `positionx` int(11) NOT NULL,
   `map` varchar(255) NOT NULL,
-  `id_pokemon` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `users`
 --
 
-INSERT INTO `users` (`id`, `nom`, `prenom`, `login`, `mdp`, `direction`, `positiony`, `positionx`, `map`, `id_pokemon`) VALUES
-(1, 'de Vaublanc', 'Benjamin', 'mewmew', 'abc123', 'down', 6, 5, 'city', 1);
+INSERT INTO `users` (`id`, `fb_id`, `nom`, `prenom`, `login`, `mdp`, `direction`, `positiony`, `positionx`, `map`) VALUES
+(1, 678475131, 'de Vaublanc', 'Benjamin', 'mewmew', 'abc123', 'down', 6, 5, 'city');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

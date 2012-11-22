@@ -1134,6 +1134,7 @@ var initPokemon = function() {
 		$.getJSON('json/pkm.json', function(listPkm) {
 			PKM = listPkm; 
 		});
+		
 		$.getJSON('json/attack.json', function(listAttack) {
 			ATTACK = listAttack; 
 		});
