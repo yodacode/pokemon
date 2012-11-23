@@ -776,11 +776,6 @@ var initPokemon = function() {
 	var DialogueConstructor = function Dialogue(){
 		this.next = $('.button.a');
 		var self = this;
-		if($('.fight .panel').is(':visible')){
-			this.blockDialogue = $('.dialogue');
-		} else {
-			this.blockDialogue = $('.dialogue-maps');
-		}
 		this.next.click(function(){
 			if (self.listDialogue.length <= 0) {
 				return;
@@ -813,6 +808,11 @@ var initPokemon = function() {
 	 * @Docs : prend une liste de dialogues et les affiche à la chaine dans le bloc 
 	 */
 	DialogueConstructor.prototype.startDialogue = function (listDialogue, callback){
+		if($('.fight .panel').is(':visible')){
+			this.blockDialogue = $('.dialogue');
+		} else {
+			this.blockDialogue = $('.dialogue-maps');
+		}
 		this.listDialogue = listDialogue;
 		this.currentDialogue = 0;
 		this.callback = callback || null;
@@ -1214,6 +1214,7 @@ var initPokemon = function() {
 						'Allez zouh ! tu peux sortir en toute sécurité maintenant',
 					],
 					function(){
+						self.loadMyPokemon();
 						self.gotPokemon = true;
 							items = 
 							[

@@ -12,7 +12,7 @@
 		$data['type'] = 'plante';
 		$data['img'] = 'bulbizarre.png';
 		$data['xp'] = 0;
-		$data['levelup'] = 150;
+		$data['levelup'] = 316;
 		$data['pv'] = 45;
 		$data['currentpv'] = 45;
 		$data['attack1'] = 'charge';
@@ -20,7 +20,7 @@
 		$data['attack3'] = 'rugissement';
 		$data['defense'] = 49;
 		$data['attack'] = 49;
-		$data['level'] = 5;
+		$data['level'] = 6;
 		
 	 } elseif ($pokemon == 'salameche') {
 			
@@ -28,7 +28,7 @@
 		$data['type'] = 'feu';
 		$data['img'] = 'salameche.png';
 		$data['xp'] = 0;
-		$data['levelup'] = 150;
+		$data['levelup'] = 316;
 		$data['pv'] = 39;
 		$data['currentpv'] = 39;
 		$data['attack1'] = 'griffe';
@@ -36,7 +36,7 @@
 		$data['attack3'] = 'rugissement';
 		$data['defense'] = 43;
 		$data['attack'] = 52;
-		$data['level'] = 5;
+		$data['level'] = 6;
 		
 	 } elseif ($pokemon == 'carapuce') {
 		
@@ -44,7 +44,7 @@
 		$data['type'] = 'eau';
 		$data['img'] = 'carapuce.png';
 		$data['xp'] = 0;
-		$data['levelup'] = 150;
+		$data['levelup'] = 316;
 		$data['pv'] = 44;
 		$data['currentpv'] = 44;
 		$data['attack1'] = 'charge';
@@ -52,7 +52,7 @@
 		$data['attack3'] = 'grosYeux';
 		$data['defense'] = 65;
 		$data['attack'] = 48;
-		$data['level'] = 5;
+		$data['level'] = 6;
 	
 	 }
 	
@@ -62,8 +62,8 @@
 	
 	
 	$req = $pkm->prepare(
-		'INSERT into pokemons (nom, type, img, xp, levelup, pv, attack1, attack2, attack3, defense, attack, level, id_users) 
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+		'INSERT into pokemons (nom, type, img, xp, levelup, pv, currentpv, attack1, attack2, attack3, defense, attack, level, id_users) 
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 	);
 	$req->execute(
 		array(
@@ -73,6 +73,7 @@
 			$data['xp'],
 			$data['levelup'],
 			$data['pv'],
+			$data['currentpv'],
 			$data['attack1'],
 			$data['attack2'],
 			$data['attack3'],

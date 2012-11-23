@@ -238,7 +238,7 @@
 	left: 0;
 	background:#000;
 	overflow: hidden;
-	z-index:2;
+	z-index:6000;
 	display:none;
 	overflow:hidden;
 	
