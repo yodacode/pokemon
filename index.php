@@ -1,8 +1,7 @@
 <?php 
-//test lucas
 	require_once("api/facebook.php"); 
 	require_once("config/connexion.php");
-	
+		
 	$facebook = new Facebook(array(
 		'appId'  => APP_ID,
 		'secret' => APP_SECRET,
@@ -12,14 +11,15 @@
 	$user = $facebook->getUser();
 	if($user){
 		$user_profile = $facebook->api('/me');
+		
 		$req = $pkm->prepare('SELECT * FROM users WHERE fb_id= ?');
 		$req->execute(array($user_profile['id']));
 		
 		if(count($req->fetchAll()) == 0) {
 			$req = $pkm->prepare('INSERT into users (fb_id, nom, prenom, login, direction, positiony, positionx, map) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-			$req->execute(array($user_profile['id'],$user_profile['last_name'],$user_profile['first_name'],$user_profile['email'],'up',6,5,'chen'));
+			$req->execute(array($user_profile['id'],$user_profile['last_name'],$user_profile['first_name'],$user_profile['email'],'up',4,5,'chen'));
 		}
-		
+	
 		echo '<pre>';
 			//print_r($user_profile);
 		echo '</pre>';
@@ -125,6 +125,24 @@
 					</div>
 				</div>
 				<div class="sasha"></div>
+				
+				<div class="dialogue-maps">
+					<div class="content">
+						
+					</div>
+					
+				</div>
+				<div class="pkm-container">
+							<div class="pkm salameche">
+								<img src="img/pokemon/front/salameche.png"/>
+							</div>
+							<div class="pkm carapuce">
+								<img src="img/pokemon/front/carapuce.png"/>
+							</div>
+							<div class="pkm bulbizarre">
+								<img src="img/pokemon/front/bulbizarre.png"/>
+							</div>
+				</div>
 			</div>
 			<div class="joystick">
 				<div class="arrow top btnUp"><span class="direction">up</span></div>

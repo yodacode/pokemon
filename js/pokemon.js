@@ -197,7 +197,48 @@ var initPokemon = function() {
 		if(action == 'fight'){
 			Fight.playFight();
 		} else if(action == 'change') {
-			Init.updateRender(Map.map[Sasha.y][Sasha.x].map);
+			if(Init.gotPokemon){
+				Init.updateRender(Map.map[Sasha.y][Sasha.x].map);
+			} else {	
+				Map.addItems(
+					[
+						{
+							name : 'hep', 
+							value :  new ItemConstructor(2, 5, 1, 1, 'maps/chen/hep.png', { action : 'allow'})
+						}
+					]
+				);
+				setTimeout(function(){
+					Dialogue.startDialogue(
+						[
+							'Hep hep ! '+FIRSTNAME+' ! tu es complétement inconcient ! Quelle idée de sortir comme !',
+							'Tu as besoin d\'un pokemon pour te protéger dans les hautes herbes', 
+							'et pour pouvoir jouer avec tes copains Facebook',
+							'Tu vas voir j\'ai de trés bon pokemons à te proposer !!',
+							'Tu vas voir, tu vas devenir un trés bon dresseur de pokemon j\'en suis certain...',
+							'J\'espère aussi, que Mr Matelli te donnera une bonne note',
+							'car ton équipe as chier un paquet de ligne en javascript...',
+							'Bref... Je m\'egard, Alors...',
+							'Clique sur le pokemon de ton choix,',
+							'et n\'oublie pas de le faire evoluer en combattant dans les herbes !',
+						],
+						function(){
+							$('.pkm-container').fadeIn();
+							$('.pkm').click(function(){
+								if($(this).hasClass('carapuce')){
+									Init.chooseMyPokemon('carapuce');
+								} else if ($(this).hasClass('bulbizarre')) {
+									Init.chooseMyPokemon('bulbizarre');
+								} else if ($(this).hasClass('salameche')) {
+									Init.chooseMyPokemon('salameche');
+								}
+							});
+						}
+					);
+				}, 800);
+				
+				
+			}
 		}
  	}
 	
@@ -683,14 +724,8 @@ var initPokemon = function() {
 							$('.my-pokemon .level .value:last').text(newLevel);
 							Fight.stopFight();
 						});
-						
 					});
-					//Fight.stopFight();
-				
-				
-				
-
-				
+					//Fight.stopFight();			
 			},
 			error : function () {
 				console.log(arguments);
@@ -741,7 +776,11 @@ var initPokemon = function() {
 	var DialogueConstructor = function Dialogue(){
 		this.next = $('.button.a');
 		var self = this;
-		this.blockDialogue = $('.command .dialogue');
+		if($('.fight .panel').is(':visible')){
+			this.blockDialogue = $('.dialogue');
+		} else {
+			this.blockDialogue = $('.dialogue-maps');
+		}
 		this.next.click(function(){
 			if (self.listDialogue.length <= 0) {
 				return;
@@ -780,6 +819,7 @@ var initPokemon = function() {
 		this.animation();
 	}
 	
+
 	
 	/**
 	 * method : animation() 
@@ -801,6 +841,8 @@ var initPokemon = function() {
 		});
 
 	};
+	
+
 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	
@@ -1116,7 +1158,7 @@ var initPokemon = function() {
 		Fight = new FightConstructor();
 		Attack = new AttackConstructor();
 		
-		Sasha = new SashaConstructor($('.sasha'), 'down', {top : 6, left : 5});		
+		Sasha = new SashaConstructor($('.sasha'), 'down', {top : 4, left : 5});		
 		SoundCity = new SoundConstructor('pallet-town');
 		SoundFight = new SoundConstructor('fight-sound');
 		SoundCity.soundPlay();
@@ -1126,13 +1168,13 @@ var initPokemon = function() {
 		
 		
 	
-		
+		this.gotPokemon = false;
 		this.loadMyPokemon();
 		this.getRender();
 		
 
 		$.getJSON('json/pkm.json', function(listPkm) {
-			PKM = listPkm; 
+			PKM = listPkm;
 		});
 		
 		$.getJSON('json/attack.json', function(listAttack) {
@@ -1143,7 +1185,54 @@ var initPokemon = function() {
 		
 	};
 	
-	//Pokemon = new PokemonConstructor('bulbizarre', ['charge','tranchHerbe','rugissement'], 'plante', 'bulbizarre.png', {defense:49, attack:49, level:60, xp:0, currentPV:45, pv:45});
+	
+	
+	/**
+	 * method : chooseMyPokemon(string name)
+	 * @Docs : Permet de choisir son premier pokemon de l'insérer dans la base et de le charger
+	 */
+	InitConstructor.prototype.chooseMyPokemon = function Pokemon (name) {
+		var name = name;
+		var self = this;
+		$('.pkm-container').hide();
+		$('.loader').text('Insert pokemon...');
+		$('.loader').fadeIn();
+		$.ajax({
+			type : 'GET',
+			url : 'request/insert-first-pokemon.php?userid='+USERID+'&pokemon='+name,
+			success : function (e) {
+				console.log(e);
+				
+				$('.loader').fadeOut(900);
+				Dialogue.startDialogue(
+					[
+						'Ooooh un '+name+' super bon choix',
+						'juste pour info...',
+						'Les interaction avec facebook sont désormais disponibles dans le menu',
+						'Il faut simplement que tu clique sur le boutton start',
+						'Et tu pourras allez faire craner ton pokemon sur facebook',
+						'Allez zouh ! tu peux sortir en toute sécurité maintenant',
+					],
+					function(){
+						self.gotPokemon = true;
+							items = 
+							[
+								{name : 'hideHep', value :  new ItemConstructor(2, 5, 1, 1, 'maps/chen/hep.png', { action : 'allow'})},
+								{name : 'table', value :  new ItemConstructor(4, 6, 2, 3, 'maps/chen/desk.png', { action : 'conflict', proba : 1})},
+								{name : 'pokeball', value :  new ItemConstructor(4, 7, 1, 1, 'maps/chen/pokeball.png', { action : 'conflict', proba : 1})},
+								{name : 'pokeball', value :  new ItemConstructor(4, 8, 1, 1, 'maps/chen/pokeball.png', { action : 'conflict', proba : 1})},	
+							];
+							Map.addItems(items);
+					}
+				);
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
+		
+	}
+	
 	
 	/**
 	 * method : loadMyPokemon()
@@ -1158,25 +1247,31 @@ var initPokemon = function() {
 			url : 'request/load-pokemon.php?userid='+USERID,
 			dataType :'json',
 			success : function (e) {
-				Pokemon = new PokemonConstructor(
-					e.nom, 
-					[
-						e.attack1,
-						e.attack2,
-						e.attack3
-					], 
-					e.type, 
-					e.img, 
-					{
-						defense:e.defense,
-						attack:e.attack,
-						level:e.level,
-						xp:e.xp,
-						levelup:e.levelup,
-						currentPV:e.currentpv,
-						pv:e.pv
-					}
-				);
+				console.log(e);
+				if(e == false){
+					gotPokemon = false;
+				} else {				
+					Pokemon = new PokemonConstructor(
+						e.nom, 
+						[
+							e.attack1,
+							e.attack2,
+							e.attack3
+						], 
+						e.type, 
+						e.img, 
+						{
+							defense:e.defense,
+							attack:e.attack,
+							level:e.level,
+							xp:e.xp,
+							levelup:e.levelup,
+							currentPV:e.currentpv,
+							pv:e.pv
+						}
+					);
+					self.gotPokemon = true;
+				}
 				$('.loader').fadeOut(900);
 			},
 			error : function () {
@@ -1225,7 +1320,6 @@ var initPokemon = function() {
 	 * @Docs : permet d'obtenir le render au chargment de la page
 	 */
 	InitConstructor.prototype.getRender = function () {
-		console.log(USERID);
 		$('.loader').text('Get render...');
 		$('.loader').fadeIn();
 		$('.sasha').hide();
@@ -1262,8 +1356,8 @@ var initPokemon = function() {
 	 * return : 
 	 */
 	InitConstructor.prototype.initChen = function () {
-		Sasha.x = 5;
-		Sasha.y = 8;
+		Sasha.x = 4;
+		Sasha.y = 6;
 		Sasha.updateRender({x:Sasha.x,y:Sasha.y},0);
 		items = 
 		[
@@ -1278,6 +1372,9 @@ var initPokemon = function() {
 			{name : 'wallBorderRight', value :  new ItemConstructor(0, 10, 9, 1, 'maps/chen/wall-border.jpg', { action : 'conflict', proba : 1})},
 			{name : 'chen', value :  new ItemConstructor(3, 5, 1, 1, 'maps/chen/chen.png', { action : 'conflict', proba : 1})},
 			{name : 'table', value :  new ItemConstructor(4, 6, 2, 3, 'maps/chen/desk.png', { action : 'conflict', proba : 1})},
+			{name : 'pokeball', value :  new ItemConstructor(4, 6, 1, 1, 'maps/chen/pokeball.png', { action : 'conflict', proba : 1})},
+			{name : 'pokeball', value :  new ItemConstructor(4, 7, 1, 1, 'maps/chen/pokeball.png', { action : 'conflict', proba : 1})},
+			{name : 'pokeball', value :  new ItemConstructor(4, 8, 1, 1, 'maps/chen/pokeball.png', { action : 'conflict', proba : 1})},
 			//{name : 'combat', value :  new ItemConstructor(5, 1, 2, 3, 'maps/chen/leaf.png', { action : 'fight', proba : 2})},
 		];
 		Map.addItems(items);
@@ -1401,7 +1498,10 @@ window.fbAsyncInit = function() {
 		
 			
 			FB.api('/me', function(response) {
+				console.log(response);
 				USERID = response.id;
+				FIRSTNAME = response.first_name;
+				
 				Init = new InitConstructor();
 			});
 			
