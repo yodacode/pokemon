@@ -36,7 +36,7 @@ var initPokemon = function() {
 	
 	/**
 	 * method : moving(direction)
-	 * @Docs : Permet de faire bougé Sasha en method de la direction
+	 * @Docs : Permet de faire bougé Sasha en fonction de la direction
 	 */
 	SashaConstructor.prototype.moving = function(direction){
 		this.direction = direction;
@@ -311,7 +311,7 @@ var initPokemon = function() {
 	 * @Docs : Permet de catché la direction et l'etat du bouton  
 	 */
 	var ControlConstructor = function Control() {
-		this.allow = true;
+		this.canPress = true;
 		var self = this;
 		this.statment = {
 			up : 'nopress',
@@ -319,20 +319,21 @@ var initPokemon = function() {
 			right : 'nopress',
 			left : 'nopress'
 		}
-		if(this.allow){
 			$('.arrow').mousedown(function(){
-				Sasha.direction = $(this).find('.direction').text();
-				self.statment[Sasha.direction] = 'press';
-				if (Sasha.timerMoveTo) return ;
-				Sasha.playMove(Sasha.direction);
-				Sasha.moveTo(Sasha.direction);
+				if (self.canPress) {
+					Sasha.direction = $(this).find('.direction').text();
+					self.statment[Sasha.direction] = 'press';
+					if (Sasha.timerMoveTo) return ;
+					Sasha.playMove(Sasha.direction);
+					Sasha.moveTo(Sasha.direction);
+				}
 			});
 			$(window).mouseup(function () {
-				self.statment[Sasha.direction] = 'nopress';
-				Sasha.stopMove(Sasha.direction);
-				
+				if (self.canPress) {
+					self.statment[Sasha.direction] = 'nopress';
+					Sasha.stopMove(Sasha.direction);
+				}
 			});
-		}
 	};
 	
 	
@@ -483,7 +484,7 @@ var initPokemon = function() {
 		var self = this;
 		SoundCity.soundPause();
 		SoundFight.soundPlay();
-	
+		Control.canPress = false;
 		self.panel.css('background-color','#000');
 		$('.screen .fight .panel').hide();
 		timerIntro = window.setInterval(function(){
@@ -638,12 +639,14 @@ var initPokemon = function() {
 		this.jeton = 0;
 		Fight.actionBlock.show();
 		Fight.attackBlock.empty();
+		Sasha.stopMove();
 		this.panel.find('.value').empty();
 		this.panel.find('.talk .content').empty();
 		this.panel.find('.img').empty();
 		this.panel.find('.currentPV').empty();
 		this.panel.find('.rival-pokemon .img').css({left : 340, top : 0 ,opacity : 0});
 		this.panel.find('.rival-pokemon .life').css({width:100+'%'});
+		this.panel.find('.my-pokemon .life').css({width:100+'%'});
 		this.panel.find('.my-pokemon .img').css({left : -130, top : 65 ,opacity : 0});
 	};
 	
@@ -653,10 +656,8 @@ var initPokemon = function() {
 	 * @Docs : update l'xp du pokemon à la fin du combat
 	 */
 	FightConstructor.prototype.increaseXp = function () {
-		console.log('increase xp in db');
 		this.xpWin = null; 
 		this.xpWin = (this.rivalPokemon.level * this.myPokemon.level / 7)*50;
-		console.log('XP WIIN'+this.xpWin);
 		var self = this;
 
 		var newXp = parseInt(this.xpWin) + parseInt(this.myPokemon.xp);
@@ -684,7 +685,6 @@ var initPokemon = function() {
 	 * @Docs : update la barre de progression d'xp et init le pokemon avec les nouveaux params gagné pendant la fight
 	 */
 	FightConstructor.prototype.updateRenderXp = function (myPokemonXp,xpRequire) {
-		console.log('update render xp');
 		var progression = (myPokemonXp/xpRequire)*100;
 		if(progression >= 100){
 			this.levelUp(this.myPokemon.level,xpRequire,myPokemonXp);
@@ -702,7 +702,6 @@ var initPokemon = function() {
 	 * @Docs : level up  le pokemon et update la table xp et levelup
 	 */
 	FightConstructor.prototype.levelUp = function (levelPokemon,levelUp) {
-		console.log('level up');
 		var self = this;
 		var newLevel = (parseInt(levelPokemon))+1;
 		var newLevelUp = this.xpRequire(newLevel);
@@ -740,7 +739,6 @@ var initPokemon = function() {
 	 */
 	FightConstructor.prototype.xpRequire = function (levelPokemon) {
 		var result = (1,2*(levelPokemon*3)) - (15*(levelPokemon*2)) + (100*levelPokemon) - 140;
-		console.log(result);
 		return result;
 	}
 	
@@ -750,23 +748,82 @@ var initPokemon = function() {
 	 */
 	FightConstructor.prototype.stopFight = function () {
 		var self = this;
+		
 		if(this.winner == 0) {
 			Dialogue.startDialogue(['Héhé !'],function(){
 				Sasha.sashaDiv.show();
 				self.panel.hide();
 				self.clearFight();
 				SoundFight.soundPause();
-			
 				SoundCity = new SoundConstructor('pallet-town');
 				SoundCity.soundPlay();
+				Control.canPress = true;
 			});					
 		} else if(this.winner == 1) {
-			Dialogue.startDialogue(['Oooooooooooh non on a perdu']);					
+			Dialogue.startDialogue(['Oooooooooooh non on a perdu'],function(){
+				Sasha.sashaDiv.show();
+				self.panel.hide();
+				self.clearFight();
+				SoundFight.soundPause();
+				SoundCity = new SoundConstructor('pallet-town');
+				SoundCity.soundPlay();
+				Control.canPress = true;
+			});					
 		}
-		
+		$('.dialogue-maps').hide();
 	};
 
 	
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+	/**
+	 * Class : Options()
+	 * @Docs : Permet de construir le panneau d'options
+	 */
+	var OptionConstructor = function Option(){
+		
+		this.canGetOption = true;
+		this.options = $('.options');
+		var self = this;
+		
+		$('.button.start').click(function() {
+			self.getRanking();
+			if(self.canGetOption) {
+				if(self.options.is(':visible')) {
+					self.options.hide();
+				} else {
+					self.options.show();
+				}
+			}
+		});
+	};
+	
+	/**
+	 * method : getRanking() 
+	 * @Docs : permet d'afficher le classement des pokemon 
+	 */
+	OptionConstructor.prototype.getRanking = function (){
+		var self = this;
+		$('.loader').text('Search ranking...');
+		$('.loader').fadeIn();
+		$.ajax({
+			type : 'GET',
+			url : 'request/get-ranking.php',
+			dataType :'json',
+			success : function (e) {
+				console.log(e);
+				$('.loader').fadeOut(900);
+				FB.api('/me', function(friendsList) {
+					FRIENDSLIST = friendsList;
+					console.log(FRIENDSLIST);
+				});
+			},
+			error : function () {
+				console.log(arguments);
+			}
+		});
+	};
+
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	
 	/**
@@ -1157,6 +1214,7 @@ var initPokemon = function() {
 		Dialogue = new DialogueConstructor();	
 		Fight = new FightConstructor();
 		Attack = new AttackConstructor();
+		Option = new OptionConstructor();
 		
 		Sasha = new SashaConstructor($('.sasha'), 'down', {top : 4, left : 5});		
 		SoundCity = new SoundConstructor('pallet-town');
@@ -1201,7 +1259,6 @@ var initPokemon = function() {
 			type : 'GET',
 			url : 'request/insert-first-pokemon.php?userid='+USERID+'&pokemon='+name,
 			success : function (e) {
-				console.log(e);
 				
 				$('.loader').fadeOut(900);
 				Dialogue.startDialogue(
@@ -1216,6 +1273,7 @@ var initPokemon = function() {
 					function(){
 						self.loadMyPokemon();
 						self.gotPokemon = true;
+						
 							items = 
 							[
 								{name : 'hideHep', value :  new ItemConstructor(2, 5, 1, 1, 'maps/chen/hep.png', { action : 'allow'})},
@@ -1248,7 +1306,6 @@ var initPokemon = function() {
 			url : 'request/load-pokemon.php?userid='+USERID,
 			dataType :'json',
 			success : function (e) {
-				console.log(e);
 				if(e == false){
 					gotPokemon = false;
 				} else {				
@@ -1499,7 +1556,6 @@ window.fbAsyncInit = function() {
 		
 			
 			FB.api('/me', function(response) {
-				console.log(response);
 				USERID = response.id;
 				FIRSTNAME = response.first_name;
 				

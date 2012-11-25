@@ -52,14 +52,29 @@
 			}(document)); 
 		</script>
 	<div class="container">
+		<div id="friendList">
+			<?php 
+				
+			?>
+		</div>
 		<div class="pause">pause</div>
 		<div class="play">play</div>
 		<div class="overflow" style="width:1px;height:1px">&nbsp;<?php include('preload-img.php');?></div>
 		<div class="gameboy">
 		<div class="loader">...</div>
 			<div class="screen">
-			
-				<div class="fight">
+			<div class="options">
+				<div class="content">
+					<div class="sidebar">
+						<ul>
+							<li><a href="#">Partager mon Pokemon sur facebook</a></li>
+							<li><a href="#">Voir le classement des meilleurs pokemons</a></li>
+							<li><a href="#">Défier le pokemon d'un ami</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="fight">
 					<div class="panel">
 						<div class="rival-pokemon">
 							<div class="overflow">
@@ -128,20 +143,18 @@
 				
 				<div class="dialogue-maps">
 					<div class="content">
-						
 					</div>
-					
 				</div>
 				<div class="pkm-container">
-							<div class="pkm salameche">
-								<img src="img/pokemon/front/salameche.png"/>
-							</div>
-							<div class="pkm carapuce">
-								<img src="img/pokemon/front/carapuce.png"/>
-							</div>
-							<div class="pkm bulbizarre">
-								<img src="img/pokemon/front/bulbizarre.png"/>
-							</div>
+					<div class="pkm salameche">
+						<img src="img/pokemon/front/salameche.png"/>
+					</div>
+					<div class="pkm carapuce">
+						<img src="img/pokemon/front/carapuce.png"/>
+					</div>
+					<div class="pkm bulbizarre">
+						<img src="img/pokemon/front/bulbizarre.png"/>
+					</div>
 				</div>
 			</div>
 			<div class="joystick">

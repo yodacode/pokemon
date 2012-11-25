@@ -228,6 +228,41 @@
 	height:100%;
 }
 
+/*-------options--------*/
+
+.options {
+	background: #FFF;
+	position: absolute;
+	z-index: 5000;
+	right: 0px;
+	display:none;
+}
+
+.options .sidebar {
+	overflow:hidden;
+	width: 150px;
+	height: 270px;
+	border-left: groove 5px #8687cb;
+}
+
+.options .sidebar ul {
+	margin-top:15px;
+	margin-left:5px;
+	width:135px;
+}
+
+.options .sidebar li{
+	margin-bottom:15px;
+	padding-bottom:15px;
+	font-size:13px;
+	border-bottom:solid 1px #000;
+}
+
+.options .sidebar li a{
+	color:#000;
+}
+
+
 /*-------fight--------*/
 
 .fight{
