@@ -64,13 +64,15 @@
 		<div class="loader">...</div>
 			<div class="screen">
 			<div class="options">
-				<div class="content">
 					<div class="sidebar">
 						<ul>
-							<li><a href="#">Partager mon Pokemon sur facebook</a></li>
-							<li><a href="#">Voir le classement des meilleurs pokemons</a></li>
-							<li><a href="#">Défier le pokemon d'un ami</a></li>
+							<li class="share-pokemon"><a href="#">Partager mon Pokemon sur facebook</a></li>
+							<li class="friends-pokemons"><a href="#">Pokemons de mes amis</a></li>
 						</ul>
+					</div>
+				<div class="content">
+					<div class="list-pokemons">
+						<ul></ul>
 					</div>
 				</div>
 			</div>

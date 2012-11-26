@@ -784,17 +784,33 @@ var initPokemon = function() {
 		
 		this.canGetOption = true;
 		this.options = $('.options');
+		this.content = $('.options .content');
+		this.sidebar = $('.options .sidebar');
+		this.friendsPokemon = [];
 		var self = this;
 		
+		FB.api('/me/friends', function(friendsList) {
+			FRIENDSLIST = friendsList;	
+		});
+			
 		$('.button.start').click(function() {
-			self.getRanking();
 			if(self.canGetOption) {
 				if(self.options.is(':visible')) {
+					self.content.hide();
 					self.options.hide();
 				} else {
 					self.options.show();
+					self.sidebar.show();
 				}
 			}
+		});
+		
+		$('.share-pokemon').click(function(){
+			if(self.friendsPokemon.length == 0){
+				self.getRanking();
+			}
+			self.sidebar.hide();
+			self.content.show();
 		});
 	};
 	
@@ -813,10 +829,63 @@ var initPokemon = function() {
 			success : function (e) {
 				console.log(e);
 				$('.loader').fadeOut(900);
-				FB.api('/me', function(friendsList) {
-					FRIENDSLIST = friendsList;
-					console.log(FRIENDSLIST);
-				});
+				console.log(FRIENDSLIST.data);
+				
+				for(var i = 0; i < FRIENDSLIST.data.length; i++){
+					console.log(FRIENDSLIST.data[i].id);
+					for(var j = 0; j < e.length; j++){
+						if(FRIENDSLIST.data[i].id == e[j].fb_id) {
+							self.friendsPokemon.push(e[j]);
+						}
+					}
+				}
+				
+				for(var i = 0; i < self.friendsPokemon.length; i++){
+					$('.options .list-pokemons ul').append(
+							'<li>'+
+								'<div class="vig">'+
+									'<img src="img/pokemon/front/'+self.friendsPokemon[i].img+'"/>'+
+								'</div>'+
+								'<div class="status">'+
+									'<div class="section">'+
+										'<span><strong>Nom : </strong></span>'+
+										'<span>'+self.friendsPokemon[i].nom+'</span>'+
+									'</div>'+
+									'<div class="section">'+
+										'<span><strong>Defense : </strong></span>'+
+										'<span>'+self.friendsPokemon[i].defense+'</span>'+
+									'</div>'+
+									'<div class="section">'+
+										'<span><strong>Attaque : </strong></span>'+
+										'<span>'+self.friendsPokemon[i].attack+'</span>'+
+									'</div>'+
+									'<div class="section">'+
+										'<span><strong> Niveau : </strong></span>'+
+										'<span>'+self.friendsPokemon[i].level+'</span>'+
+									'</div>'+								
+								'</div>'+
+								'<div class="foot">'+
+									'<div class="section master">'+
+										'<span><strong>Dresseur : </strong></span>'+
+										'<span>'+self.friendsPokemon[i].prenom+'</span>'+
+									'</div>'+
+									'<div class="stats-player">'+
+										'<div class="item victories">'+
+											self.friendsPokemon[i].victories+' victoires'+
+										'</div>'+
+										'<div class="item looses">'+
+											self.friendsPokemon[i].defeats+' défaites'+
+										'</div>'+
+										'<div class="item vs">'+
+											'Defier'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</li>'
+							);
+					
+					console.log(self.friendsPokemon[i].nom);
+				}
 			},
 			error : function () {
 				console.log(arguments);
