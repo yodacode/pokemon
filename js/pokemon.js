@@ -1613,8 +1613,8 @@ window.fbAsyncInit = function() {
 	// ADDITIONNAL CODE HERE
 	
 	//verifie le status de l'utilisateur
-	FB.getLoginStatus(function(response){
-		if(response.status != 'connected'){
+	FB.getLoginStatus(function(response) {
+		if(response.status != 'connected') {
 			//se connecter à facebook
 			FB.login(function(response){
 				if(response.authResponse){
@@ -1623,9 +1623,27 @@ window.fbAsyncInit = function() {
 			}, {scope : 'email,user_likes'});
 		} else {	
 			FB.api('/me', function(response) {
+				
 				USERID = response.id;
 				FIRSTNAME = response.first_name;
 				
+				var invitFriend = function (img){
+					FB.ui({
+						method:'apprequests',
+						message:'Invitation a utiliser mon application',
+						to:$(img.currentTarget).attr('friendid')
+					},function(){});
+				}
+				
+				var loadFriendsFacebook = function(){
+					$('.load-friends').hide();
+					$('.title-help').slideDown(300,function(){
+						$('.friends-list').slideDown(300);
+					});
+				}
+				
+				$('.load-friends').click(loadFriendsFacebook);
+				$('.friends-list img').click(invitFriend);
 				Init = new InitConstructor();
 			});
 		}

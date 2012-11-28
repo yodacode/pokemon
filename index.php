@@ -18,17 +18,15 @@
 		if(count($req->fetchAll()) == 0) {
 			$req = $pkm->prepare('INSERT into users (fb_id, nom, prenom, login, direction, positiony, positionx, map) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
 			$req->execute(array($user_profile['id'],$user_profile['last_name'],$user_profile['first_name'],$user_profile['email'],'up',4,5,'chen'));
-		}
-	
-
-		
+		}	
 	} else  {
 		echo "Vous n'etes pas connecté à l'application";
 	}
 ?>
 <!DOCTYPE html>
-<html>
+<html xmlns:fb="http://ogp.me/ns/fb#">
 	<head>
+		<meta property="og:tag name" content="tag value"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 		<script type="text/javascript" src="js/pokemon.js"></script>
@@ -39,16 +37,13 @@
 	</head>
 	<body>
 		<div id="fb-root"></div>
-		<script>			
-			//Load the SDK Asynchronously
-			(function(d){
-				 var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-				 if (d.getElementById(id)) {return;}
-				 js = d.createElement('script'); js.id = id; js.async = true;
-				 js.src = "//connect.facebook.net/en_US/all.js";
-				 ref.parentNode.insertBefore(js, ref);
-			}(document)); 
-		</script>
+		<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=355558234538834";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 	<div class="container">
 		<div id="friendList">
 			<?php 
@@ -175,6 +170,35 @@
 			<div class="control">
 				<div class="button select"></div>
 				<div class="button start"></div>
+			</div>
+		</div>
+	</div>
+	<div class="facebook-block">
+		<div class="content">
+			<div class="section">
+				<img src="img/logo-pokemon.jpg" class="logo"/>
+			</div>
+			<div class="section">
+				<fb:like href="http://apps.facebook.com/testbenjaminmewmew/" send="true" width="450" show_faces="true" font="arial"></fb:like>
+			</div>
+			<div class="section">
+				<fb:comments href="http://apps.facebook.com/testbenjaminmewmew/" num_posts="2" width="470"></fb:comments>
+			</div>
+			<div class="section">
+				<h2 class="title-help">Clique sur la photo pour inviter un amis à jouer</h2>
+				<button class="load-friends">Inviter mes amis facebook</button>
+			</div>
+			<div class="section">
+				<div class="friends-list">
+					<?php 
+						$friends = $facebook->api('me/friends','GET');
+						for($i=0; $i < count($friends['data']); $i++){
+							$friendsId =  $friends['data'][$i]['id'];
+							$imgUrl = 'https://graph.facebook.com/'.$friends['data'][$i]['id'].'/picture';
+							echo '<img friendid="'.$friendsId.'" src="'.$imgUrl.'"/>';
+						}
+					?>
+				</div>
 			</div>
 		</div>
 	</div>

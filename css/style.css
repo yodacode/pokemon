@@ -4,6 +4,10 @@
 	font-family:Arial, Helvetica, sans-serif;
 }
 
+body {
+	background:#dbe5ff;
+}
+
 .overflow {
 	overflow:hidden;
 }
@@ -15,6 +19,7 @@
 .hidden {
 	display:none;
 }
+
 
 strong {
 	font-weight:bold;
@@ -48,6 +53,65 @@ strong {
 	
 }
 
+/*----fabebook-block----*/
+
+.facebook-block {
+	width:100%;
+	margin-left: 502px;
+	margin-top: 35px;
+	padding-top:15px;
+	padding-bottom:15px;
+}
+
+.facebook-block .load-friends{
+	background-image: url(https://s-static.ak.fbcdn.net/rsrc.php/v2/yK/x/nDEHv4nTejR.png);
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -1px -441px;
+	background-color: #5B74A8;
+	border-color: #29447E #29447E #1A356E;
+	color:#FFF;
+	font-weight:bold;
+}
+
+.facebook-block h2{
+	bottom: 50px;
+	color: #1C2A47;
+	font-size: 12px;
+	overflow: hidden;
+	background-color: #FFF9D7;
+	border: 1px solid #E2C822;
+	text-indent:7px;
+	padding: 7px 0 7px 0;
+	margin-bottom:15px;
+	width:462px;
+	display:none;
+}
+
+.facebook-block .content {
+	overflow:hidden;
+}
+
+.facebook-block .content .friends-list {
+	width:463px;
+	height:133px;
+	overflow:scroll;
+	display:none;
+}
+
+.facebook-block .content .friends-list img{
+	width:37px;
+}
+
+.facebook-block .content .section {
+	margin-bottom:15px;
+}
+
+.facebook-block .content .section  .logo{
+ margin-left:55px;
+ margin-bottom:50px;
+}
+
 /*-------gameboy--------*/
 
 .gameboy {
@@ -56,7 +120,7 @@ strong {
 	height:655px;
 	padding-top:85px;
 	position:relative;
-	margin: 0 auto;
+	float:left;
 }
 
 .gameboy  .joystick {
