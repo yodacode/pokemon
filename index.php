@@ -9,9 +9,9 @@
 	));
 
 	$user = $facebook->getUser();
+
 	if($user){
 		$user_profile = $facebook->api('/me');
-		
 		$req = $pkm->prepare('SELECT * FROM users WHERE fb_id= ?');
 		$req->execute(array($user_profile['id']));
 		
@@ -20,9 +20,7 @@
 			$req->execute(array($user_profile['id'],$user_profile['last_name'],$user_profile['first_name'],$user_profile['email'],'up',4,5,'chen'));
 		}
 	
-		echo '<pre>';
-			//print_r($user_profile);
-		echo '</pre>';
+
 		
 	} else  {
 		echo "Vous n'etes pas connecté à l'application";

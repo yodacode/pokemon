@@ -805,7 +805,7 @@ var initPokemon = function() {
 			}
 		});
 		
-		$('.share-pokemon').click(function(){
+		$('.friends-pokemons').click(function(){
 			if(self.friendsPokemon.length == 0){
 				self.getRanking();
 			}
@@ -1622,17 +1622,13 @@ window.fbAsyncInit = function() {
 				}
 			}, {scope : 'email,user_likes'});
 		} else {	
-		
-			
 			FB.api('/me', function(response) {
 				USERID = response.id;
 				FIRSTNAME = response.first_name;
 				
 				Init = new InitConstructor();
 			});
-			
 		}
-		
 	});				
 										
 };

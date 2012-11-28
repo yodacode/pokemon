@@ -916,6 +916,7 @@ abstract class BaseFacebook
     }
 
     $opts = self::$CURL_OPTS;
+		
     if ($this->getFileUploadSupport()) {
       $opts[CURLOPT_POSTFIELDS] = $params;
     } else {
@@ -933,6 +934,9 @@ abstract class BaseFacebook
       $opts[CURLOPT_HTTPHEADER] = array('Expect:');
     }
 
+		$opts[CURLOPT_SSL_VERIFYHOST] = false;
+		$opts[CURLOPT_SSL_VERIFYPEER] = false;
+		
     curl_setopt_array($ch, $opts);
     $result = curl_exec($ch);
 
