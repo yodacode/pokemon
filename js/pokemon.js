@@ -477,7 +477,26 @@ var initPokemon = function() {
 	 * method : playFight()
 	 * @Docs : Permet de jouer l'introduction de la fight
 	 */
-	FightConstructor.prototype.playFight = function () {
+	FightConstructor.prototype.playFight = function (pkmVs) {
+		console.log(pkmVs);
+		this.isVs = false;
+		if ( pkmVs != '' && pkmVs != null && pkmVs != {}) {
+			this.pkmVs = new PokemonConstructor(
+				pkmVs.nom, 
+				[pkmVs.attack1,pkmVs.attack2,pkmVs.attack1], 
+				pkmVs.type, 
+				pkmVs.img, 
+				{
+					defense:pkmVs.defense, 
+					attack:pkmVs.attack, 
+					level:pkmVs.level, 
+					xp:pkmVs.xp, 
+					currentPV:pkmVs.pv, 
+					pv:pkmVs.currentpv
+				}
+			);	
+			this.isVs = true;
+		}
 		var timerIntro = null;
 		var nbPlay = 0;
 		var isDisplay = false;
@@ -492,7 +511,14 @@ var initPokemon = function() {
 				window.clearInterval(timerIntro);
 				self.panel.css('background','url(img/bg-fight.jpg)');
 				Sasha.sashaDiv.hide();
-				Fight.loadFight([Pokemon, Pokemon.randomPokemon()],self.jeton);
+				if(self.isVs){
+					console.log(Pokemon.randomPokemon());
+					console.log(self.pkmVs);
+					Fight.loadFight([Pokemon, self.pkmVs],self.jeton);
+				} else {
+					console.log(Pokemon.randomPokemon());
+					Fight.loadFight([Pokemon, Pokemon.randomPokemon()],self.jeton);
+				}
 			} else {
 				if(isDisplay){
 					self.panel.hide();
@@ -827,15 +853,15 @@ var initPokemon = function() {
 			url : 'request/get-ranking.php',
 			dataType :'json',
 			success : function (e) {
-				console.log(e);
 				$('.loader').fadeOut(900);
-				console.log(FRIENDSLIST.data);
-				
+					
 				for(var i = 0; i < FRIENDSLIST.data.length; i++){
-					console.log(FRIENDSLIST.data[i].id);
 					for(var j = 0; j < e.length; j++){
 						if(FRIENDSLIST.data[i].id == e[j].fb_id) {
-							self.friendsPokemon.push(e[j]);
+							console.log(e[j].id_users);
+							if(e[j].id_users != null) {
+								self.friendsPokemon.push(e[j]);
+							}
 						}
 					}
 				}
@@ -877,15 +903,18 @@ var initPokemon = function() {
 											self.friendsPokemon[i].defeats+' défaites'+
 										'</div>'+
 										'<div class="item vs">'+
+											'<div class="vs-id" style="display:none">'+i+'</div>'+
 											'Defier'+
 										'</div>'+
 									'</div>'+
 								'</div>'+
 							'</li>'
-							);
-					
-					console.log(self.friendsPokemon[i].nom);
+						);
 				}
+				$('.item.vs').click(function(){
+					var $id = $(this).find('.vs-id').text();
+					Fight.playFight(self.friendsPokemon[$id]);
+				});
 			},
 			error : function () {
 				console.log(arguments);
@@ -1601,10 +1630,9 @@ var initPokemon = function() {
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	
 window.fbAsyncInit = function() {
-	console.log('INIT');
 	FB.init({
-		appId      : 355558234538834, // App ID
-		channelUrl : '//127.0.0.1:8888/RPG/channel.html', // Channel File
+		appId      : 355558234538834, //------- PROD : 444829792243191----------DEV : 355558234538834
+		channelUrl : '//127.0.0.1:8888/RPG/channel.html',//------- PROD : http://benjamin-devaublanc.com/pkm/channel.html---------DEV : //127.0.0.1:8888/RPG/channel.html
 		status     : true, // check login status
 		cookie     : true, // enable cookies to allow the server to access the session
 		xfbml      : true  // parse XFBML

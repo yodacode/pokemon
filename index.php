@@ -30,7 +30,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 		<script type="text/javascript" src="js/pokemon.js"></script>
-		<script type="text/javascript" src="js/facebook.js"></script>
 		<link type="text/css" rel="stylesheet" href="css/sanitize.css" media="screen"/>
 		<link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
 		<title>Pokemon</title>
@@ -46,9 +45,6 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 	<div class="container">
 		<div id="friendList">
-			<?php 
-				
-			?>
 		</div>
 		<div class="pause">pause</div>
 		<div class="play">play</div>
@@ -59,7 +55,7 @@
 			<div class="options">
 					<div class="sidebar">
 						<ul>
-							<li class="share-pokemon"><a href="#">Partager mon Pokemon sur facebook</a></li>
+							<li class="share-pokemon"><a href="#">Mon pokemon</a></li>
 							<li class="friends-pokemons"><a href="#">Pokemons de mes amis</a></li>
 						</ul>
 					</div>
@@ -179,10 +175,10 @@
 				<img src="img/logo-pokemon.jpg" class="logo"/>
 			</div>
 			<div class="section">
-				<fb:like href="http://apps.facebook.com/testbenjaminmewmew/" send="true" width="450" show_faces="true" font="arial"></fb:like>
+				<fb:like href="https://apps.facebook.com/pkm-rpg-esgi/" send="true" width="450" show_faces="true" font="arial"></fb:like>
 			</div>
 			<div class="section">
-				<fb:comments href="http://apps.facebook.com/testbenjaminmewmew/" num_posts="2" width="470"></fb:comments>
+				<fb:comments href="https://apps.facebook.com/pkm-rpg-esgi/" num_posts="2" width="470"></fb:comments>
 			</div>
 			<div class="section">
 				<h2 class="title-help">Clique sur la photo pour inviter un amis à jouer</h2>
