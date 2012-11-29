@@ -53,12 +53,12 @@
 		<div class="loader">...</div>
 			<div class="screen">
 			<div class="options">
-					<div class="sidebar">
+					<!--<div class="sidebar">
 						<ul>
 							<li class="share-pokemon"><a href="#">Mon pokemon</a></li>
 							<li class="friends-pokemons"><a href="#">Pokemons de mes amis</a></li>
 						</ul>
-					</div>
+					</div>-->
 				<div class="content">
 					<div class="list-pokemons">
 						<ul></ul>

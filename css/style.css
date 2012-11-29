@@ -314,7 +314,6 @@ strong {
 	height: 260px;
 	border: groove 5px #8687CB;
 	overflow:scroll;
-	display:none;
 }
 
 .options .content .list-pokemons  li{

@@ -504,7 +504,7 @@ var initPokemon = function() {
 		SoundCity.soundPause();
 		SoundFight.soundPlay();
 		Control.canPress = false;
-		self.panel.css('background-color','#000');
+		self.panel.css({'background-color':'#000'});
 		$('.screen .fight .panel').hide();
 		timerIntro = window.setInterval(function(){
 			if(nbPlay > 16){
@@ -602,6 +602,9 @@ var initPokemon = function() {
 	 */
 	FightConstructor.prototype.doAction = function (action, pokemon) {
 		var self = this;
+		if(action == 'run'){
+			Fight.stopFight();
+		}
 		if(action == 'attack'){
 			this.attackBlock.hide();
 			this.doBlock.hide();
@@ -794,7 +797,29 @@ var initPokemon = function() {
 				SoundCity = new SoundConstructor('pallet-town');
 				SoundCity.soundPlay();
 				Control.canPress = true;
+				$('.loader').text('Update defeats');
+				$.ajax({
+					type : 'GET',
+					url : 'request/update-defeats.php?userid='+USERID,
+					dataType :'json',
+					success : function (e) {
+						$('.loader').fadeOut(900);
+					},
+					error : function () {
+						console.log(arguments);
+					}
+				});
 			});					
+		} else {
+			Dialogue.startDialogue(['tu prends la fuite ??!!', 'Bouuuuh le naaaaazzzze !'],function(){
+				Sasha.sashaDiv.show();
+				self.panel.hide();
+				self.clearFight();
+				SoundFight.soundPause();
+				SoundCity = new SoundConstructor('pallet-town');
+				SoundCity.soundPlay();
+				Control.canPress = true;
+			});
 		}
 		$('.dialogue-maps').hide();
 	};
@@ -822,21 +847,14 @@ var initPokemon = function() {
 		$('.button.start').click(function() {
 			if(self.canGetOption) {
 				if(self.options.is(':visible')) {
-					self.content.hide();
 					self.options.hide();
 				} else {
+					if(self.friendsPokemon.length == 0){
+						self.getRanking();
+					}
 					self.options.show();
-					self.sidebar.show();
 				}
 			}
-		});
-		
-		$('.friends-pokemons').click(function(){
-			if(self.friendsPokemon.length == 0){
-				self.getRanking();
-			}
-			self.sidebar.hide();
-			self.content.show();
 		});
 	};
 	
